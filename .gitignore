@@ -1,3 +1,15 @@
 node_modules/
-
 */node_modules/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.env
+
+# Database (local index)
+.washedmcp/
+
+# IDE
+.vscode/
+.idea/
