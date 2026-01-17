@@ -21,9 +21,10 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "@google/generative-ai": "^0.24.1",
+    "@leanmcp/auth": "^0.4.0",
     "@leanmcp/core": "^0.3.14",
     "@leanmcp/ui": "^0.2.1",
-    "@leanmcp/auth": "^0.4.0",
     "dotenv": "^16.5.0"
   },
   "devDependencies": {

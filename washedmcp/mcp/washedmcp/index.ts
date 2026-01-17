@@ -21,6 +21,43 @@ function loadMCPMetadata(): Record<string, any> {
   return { mcps: {} };
 }
 
+/**
+ * Update .mcp.json config file with server configuration
+ */
+function updateMcpConfig(
+  serverName: string,
+  config: {
+    command: string;
+    args?: string[];
+    env?: Record<string, string>;
+  }
+): boolean {
+  try {
+    const mcpJsonPath = path.join(process.cwd(), ".mcp.json");
+    let mcpConfig: any = { mcpServers: {} };
+
+    if (fs.existsSync(mcpJsonPath)) {
+      mcpConfig = JSON.parse(fs.readFileSync(mcpJsonPath, "utf-8"));
+    }
+
+    mcpConfig.mcpServers = mcpConfig.mcpServers || {};
+    mcpConfig.mcpServers[serverName] = {
+      type: "stdio",
+      command: config.command,
+      args: config.args || [],
+      env: config.env || {}
+    };
+
+    fs.writeFileSync(mcpJsonPath, JSON.stringify(mcpConfig, null, 2));
+    console.log(`[washedMCP] Updated .mcp.json with ${serverName}`);
+
+    return true;
+  } catch (error) {
+    console.error("[washedMCP] Error updating .mcp.json:", error);
+    return false;
+  }
+}
+
 // Load tool calls from JSON
 function loadToolCalls(): any[] {
   if (fs.existsSync(STORAGE_FILE)) {
@@ -162,7 +199,7 @@ export class washedMCPService {
   }
 
   @Tool({
-    description: "Install an MCP server automatically",
+    description: "Install an MCP server automatically by writing to .mcp.json config",
     inputClass: InstallInput
   })
   async installMCPServer(input: InstallInput) {
@@ -182,42 +219,61 @@ export class washedMCPService {
       return {
         content: [{
           type: "text" as const,
-          text: `MCP "${input.mcp_name}" not found.\n\nUse recommend_mcp_servers() or list_all_mcp_servers() to find available MCPs.`
+          text: JSON.stringify({
+            success: false,
+            error: `MCP "${input.mcp_name}" not found`,
+            hint: "Use recommend_mcp_servers() or list_all_mcp_servers() to find available MCPs."
+          }, null, 2)
         }]
       };
     }
 
     // Check required env vars
     const requiredVars = mcp.configuration?.env_vars?.required || [];
+
+    // Parse env_vars if it's a string (MCP passes objects as JSON strings)
+    let providedEnvVars: Record<string, string> = {};
+    if (input.env_vars) {
+      if (typeof input.env_vars === "string") {
+        try {
+          providedEnvVars = JSON.parse(input.env_vars);
+        } catch (e) {
+          // If it's not valid JSON, treat as empty
+          providedEnvVars = {};
+        }
+      } else {
+        providedEnvVars = input.env_vars;
+      }
+    }
+
     const missingVars = requiredVars.filter(
-      (v: any) => !input.env_vars?.[v.name]
+      (v: any) => !providedEnvVars[v.name]
     );
 
     if (missingVars.length > 0) {
-      const varList = missingVars.map((v: any) =>
-        `  - ${v.name}: ${v.description}\n    Get it at: ${v.docs_url || "See documentation"}`
-      ).join("\n");
+      // Return a structured prompt for missing credentials
+      const missingVarDetails = missingVars.map((v: any) => ({
+        name: v.name,
+        description: v.description,
+        instructions: v.prompt || `Get this from: ${v.docs_url || "See documentation"}`,
+        docs_url: v.docs_url
+      }));
+
+      const exampleCall = `install_mcp_server("${mcp.name}", env_vars: { ${missingVars.map((v: any) => `"${v.name}": "your_value"`).join(", ")} })`;
 
       return {
         content: [{
           type: "text" as const,
-          text: `Required Credentials Missing\n\n${varList}\n\nCall install_mcp_server with env_vars to provide these.`
+          text: JSON.stringify({
+            success: false,
+            requires_credentials: true,
+            mcp_name: mcp.name,
+            missing_vars: missingVarDetails,
+            example_call: exampleCall,
+            message: `The ${mcp.name} requires credentials to install. Please provide the following environment variables.`
+          }, null, 2)
         }]
       };
-    }
-
-    // Check if already installed
-    const mcpJsonPath = path.join(process.cwd(), ".mcp.json");
-    if (fs.existsSync(mcpJsonPath)) {
-      const config = JSON.parse(fs.readFileSync(mcpJsonPath, "utf-8"));
-      if (config.mcpServers?.[input.mcp_name]) {
-        return {
-          content: [{
-            type: "text" as const,
-            text: `${mcp.name} is already installed.\n\nRestart Claude Code to load it if not available.`
-          }]
-        };
-      }
     }
 
     // Get installation command
@@ -229,42 +285,100 @@ export class washedMCPService {
       return {
         content: [{
           type: "text" as const,
-          text: `Manual installation required for ${mcp.name}.\n\nDocumentation: ${mcp.documentation}`
+          text: JSON.stringify({
+            success: false,
+            manual_install_required: true,
+            mcp_name: mcp.name,
+            documentation: mcp.documentation,
+            message: `Manual installation required for ${mcp.name}. See documentation for instructions.`
+          }, null, 2)
         }]
       };
     }
 
     const method = methods[primaryMethod];
-    const command = primaryMethod === "npx"
-      ? "npx"
-      : primaryMethod === "npm"
-        ? "npx"
-        : method.command || "npx";
 
-    const args = primaryMethod === "npx"
-      ? ["-y", method.package]
-      : [method.package];
+    // Build configuration for .mcp.json
+    let command: string;
+    let args: string[];
 
-    // Update .mcp.json
-    let config: any = { mcpServers: {} };
-    if (fs.existsSync(mcpJsonPath)) {
-      config = JSON.parse(fs.readFileSync(mcpJsonPath, "utf-8"));
+    // Use command_generation if available (preferred), otherwise infer from method
+    const cmdGen = mcp.configuration?.command_generation;
+    const isWindows = process.platform === "win32";
+    const platformConfig = isWindows ? cmdGen?.windows : cmdGen?.unix;
+
+    if (platformConfig) {
+      command = platformConfig.command;
+      args = platformConfig.args || [];
+    } else if (primaryMethod === "npx" || primaryMethod === "npm") {
+      command = "npx";
+      args = ["-y", method.package];
+    } else {
+      return {
+        content: [{
+          type: "text" as const,
+          text: JSON.stringify({
+            success: false,
+            error: "Could not determine install command",
+            mcp_name: mcp.name,
+            documentation: mcp.documentation
+          }, null, 2)
+        }]
+      };
     }
 
-    config.mcpServers = config.mcpServers || {};
-    config.mcpServers[input.mcp_name] = {
-      type: mcp.configuration?.type || "stdio",
+    // Write configuration to .mcp.json
+    const configWritten = updateMcpConfig(mcp.name, {
       command,
       args,
-      env: input.env_vars || {}
-    };
+      env: providedEnvVars
+    });
 
-    fs.writeFileSync(mcpJsonPath, JSON.stringify(config, null, 2));
+    if (!configWritten) {
+      return {
+        content: [{
+          type: "text" as const,
+          text: JSON.stringify({
+            success: false,
+            error: "Failed to write configuration to .mcp.json",
+            mcp_name: mcp.name
+          }, null, 2)
+        }]
+      };
+    }
+
+    // Log the installation
+    saveToolCall({
+      tool_name: "install_mcp_server",
+      server_name: "washedmcp",
+      parameters: input,
+      result: {
+        mcp_name: mcp.name,
+        config_written: true,
+        command,
+        args,
+        env_vars_count: Object.keys(providedEnvVars).length
+      }
+    });
 
     return {
       content: [{
         type: "text" as const,
-        text: `Installation Complete: ${mcp.name}\n\nConfiguration added to .mcp.json\n- Command: ${command}\n- Args: ${args.join(" ")}\n\nRESTART REQUIRED: Please restart Claude Code to load the new MCP server.\n\nDocumentation: ${mcp.documentation}`
+        text: JSON.stringify({
+          success: true,
+          mcp_name: mcp.name,
+          config_written: true,
+          configuration: {
+            command,
+            args,
+            env_vars: Object.keys(providedEnvVars)
+          },
+          next_steps: [
+            "Configuration written to .mcp.json",
+            "Restart Claude Code to load the new MCP server",
+            `The ${mcp.name} tools will then be available`
+          ]
+        }, null, 2)
       }]
     };
   }
@@ -274,47 +388,74 @@ export class washedMCPService {
     inputClass: StatusInput
   })
   async getMCPInstallationStatus(input: StatusInput) {
+    // First check local .mcp.json (for development/testing)
     const mcpJsonPath = path.join(process.cwd(), ".mcp.json");
-
-    if (!fs.existsSync(mcpJsonPath)) {
-      return {
-        content: [{
-          type: "text" as const,
-          text: "No .mcp.json configuration file found."
-        }]
-      };
-    }
-
-    const config = JSON.parse(fs.readFileSync(mcpJsonPath, "utf-8"));
-    const mcpConfig = config.mcpServers?.[input.mcp_name];
-
-    if (!mcpConfig) {
-      const metadata = loadMCPMetadata();
-      const mcp = Object.values(metadata.mcps || {}).find(
-        (m: any) => m.name?.toLowerCase() === input.mcp_name.toLowerCase()
-      ) as any;
-
-      if (mcp) {
-        return {
-          content: [{
-            type: "text" as const,
-            text: `${mcp.name} is NOT installed\n\nDescription: ${mcp.description}\nDocumentation: ${mcp.documentation}\n\nInstall with: install_mcp_server("${mcp.name}")`
-          }]
-        };
+    let localConfig: any = null;
+    
+    if (fs.existsSync(mcpJsonPath)) {
+      try {
+        const config = JSON.parse(fs.readFileSync(mcpJsonPath, "utf-8"));
+        localConfig = config.mcpServers?.[input.mcp_name];
+      } catch (e) {
+        // Ignore parse errors
       }
+    }
 
+    // Look up MCP in metadata
+    const metadata = loadMCPMetadata();
+    const mcp = Object.values(metadata.mcps || {}).find(
+      (m: any) => m.name?.toLowerCase() === input.mcp_name.toLowerCase()
+    ) as any;
+
+    if (!mcp) {
       return {
         content: [{
           type: "text" as const,
-          text: `"${input.mcp_name}" not found in configuration or database.`
+          text: `"${input.mcp_name}" not found in database.\n\nUse list_all_mcp_servers() to see available MCPs.`
         }]
       };
     }
+
+    if (localConfig) {
+      return {
+        content: [{
+          type: "text" as const,
+          text: JSON.stringify({
+            installed: true,
+            mcp_name: mcp.name,
+            configuration: {
+              type: localConfig.type,
+              command: localConfig.command,
+              args: localConfig.args || [],
+              env_vars_configured: Object.keys(localConfig.env || {}).length
+            },
+            note: "Server is configured in .mcp.json. Restart Claude Code if not yet loaded."
+          }, null, 2)
+        }]
+      };
+    }
+
+    // Check required env vars for the not-installed response
+    const requiredVars = mcp.configuration?.env_vars?.required || [];
+    const needsCredentials = requiredVars.length > 0;
 
     return {
       content: [{
         type: "text" as const,
-        text: `${input.mcp_name} is INSTALLED\n\nConfiguration:\n- Type: ${mcpConfig.type}\n- Command: ${mcpConfig.command}\n- Args: ${mcpConfig.args?.join(" ") || "none"}\n- Env vars: ${Object.keys(mcpConfig.env || {}).length} configured\n\nStatus: Ready (restart Claude Code if not loaded)`
+        text: JSON.stringify({
+          installed: false,
+          mcp_name: mcp.name,
+          description: mcp.description,
+          documentation: mcp.documentation,
+          requires_credentials: needsCredentials,
+          required_env_vars: requiredVars.map((v: any) => ({
+            name: v.name,
+            description: v.description
+          })),
+          install_command: needsCredentials
+            ? `install_mcp_server("${mcp.name}", env_vars: { ${requiredVars.map((v: any) => `"${v.name}": "your_value"`).join(", ")} })`
+            : `install_mcp_server("${mcp.name}")`
+        }, null, 2)
       }]
     };
   }

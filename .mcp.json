@@ -1,0 +1,46 @@
+{
+  "mcpServers": {
+    "Playwright MCP": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@executeautomation/playwright-mcp-server"
+      ],
+      "env": {}
+    },
+    "Github MCP": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-github"
+      ],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "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"
+      }
+    },
+    "Todoist": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@geralt1983/mcp-todoist"
+      ],
+      "env": {
+        "TODOIST_API_TOKEN": "aeef0fef31e0e62510441f264a41f8170c5c30ab"
+      }
+    },
+    "Tavily": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@tavily-ai/tavily-mcp"
+      ],
+      "env": {
+        "TAVILY_API_KEY": "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"
+      }
+    }
+  }
+}

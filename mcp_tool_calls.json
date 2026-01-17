@@ -1,0 +1,323 @@
+[
+  {
+    "tool_name": "mcp__washedmcp__installMCPServer",
+    "server_name": "washedmcp",
+    "call_id": "toolu_01M6caQ9JCThCY16dKoH9ujR",
+    "parameters": {
+      "mcp_name": "Github MCP"
+    },
+    "result": "{\"success\":false,\"requires_credentials\":true,\"mcp_name\":\"Github MCP\",\"missing_vars\":[{\"name\":\"GITHUB_PERSONAL_ACCESS_TOKEN\",\"description\":\"GitHub Personal Access Token with repo permissions\",\"instructions\":\"Enter your GitHub Personal Access Token (create at https://github.com/settings/tokens):\",\"docs_url\":\"https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token\"}],\"example_call\":\"install_mcp_server(\\\"Github MCP\\\", env_vars: { \\\"GITHUB_PERSONAL_ACCESS_TOKEN\\\": \\\"your_value\\\" })\",\"message\":\"The Github MCP requires credentials to install. Please provide the following environment variables.\"}",
+    "timestamp": "2026-01-17T20:52:08.546655"
+  },
+  {
+    "tool_name": "mcp__washedmcp__installMCPServer",
+    "server_name": "washedmcp",
+    "call_id": "toolu_01T13yrBu526q4GfLEqQXWno",
+    "parameters": {
+      "mcp_name": "Playwright MCP"
+    },
+    "result": "{\"success\":true,\"mcp_name\":\"Playwright MCP\",\"config_written\":true,\"configuration\":{\"command\":\"npx\",\"args\":[\"-y\",\"@executeautomation/playwright-mcp-server\"],\"env_vars\":[]},\"next_steps\":[\"Configuration written to .mcp.json\",\"Restart Claude Code to load the new MCP server\",\"The Playwright MCP tools will then be available\"]}",
+    "timestamp": "2026-01-17T20:52:17.264925"
+  },
+  {
+    "tool_name": "mcp__washedmcp__installMCPServer",
+    "server_name": "washedmcp",
+    "call_id": "toolu_01TtVC9qen6cHRbuz87UocQ7",
+    "parameters": {
+      "mcp_name": "Github MCP",
+      "env_vars": "{\"GITHUB_PERSONAL_ACCESS_TOKEN\": \"test_token_123\"}"
+    },
+    "result": "{\"success\":false,\"requires_credentials\":true,\"mcp_name\":\"Github MCP\",\"missing_vars\":[{\"name\":\"GITHUB_PERSONAL_ACCESS_TOKEN\",\"description\":\"GitHub Personal Access Token with repo permissions\",\"instructions\":\"Enter your GitHub Personal Access Token (create at https://github.com/settings/tokens):\",\"docs_url\":\"https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token\"}],\"example_call\":\"install_mcp_server(\\\"Github MCP\\\", env_vars: { \\\"GITHUB_PERSONAL_ACCESS_TOKEN\\\": \\\"your_value\\\" })\",\"message\":\"The Github MCP requires credentials to install. Please provide the following environment variables.\"}",
+    "timestamp": "2026-01-17T20:52:29.624676"
+  },
+  {
+    "tool_name": "mcp__washedmcp__installMCPServer",
+    "server_name": "washedmcp",
+    "call_id": "toolu_0188XzuxMcztxMvwTnZ5NjoZ",
+    "parameters": {
+      "mcp_name": "Github MCP",
+      "env_vars": "{\"GITHUB_PERSONAL_ACCESS_TOKEN\": \"test_token_123\"}"
+    },
+    "result": "{\"success\":true,\"mcp_name\":\"Github MCP\",\"config_written\":true,\"configuration\":{\"command\":\"npx\",\"args\":[\"-y\",\"@modelcontextprotocol/server-github\"],\"env_vars\":[\"GITHUB_PERSONAL_ACCESS_TOKEN\"]},\"next_steps\":[\"Configuration written to .mcp.json\",\"Restart Claude Code to load the new MCP server\",\"The Github MCP tools will then be available\"]}",
+    "timestamp": "2026-01-17T20:53:18.569288"
+  },
+  {
+    "tool_name": "mcp__washedmcp__getMCPInstallationStatus",
+    "server_name": "washedmcp",
+    "call_id": "toolu_01DLF8q5WNEnMLvtSbkcWuxw",
+    "parameters": {
+      "mcp_name": "Github MCP"
+    },
+    "result": "{\"installed\":true,\"mcp_name\":\"Github MCP\",\"configuration\":{\"type\":\"stdio\",\"command\":\"npx\",\"args\":[\"-y\",\"@modelcontextprotocol/server-github\"],\"env_vars_configured\":1},\"note\":\"Server is configured in .mcp.json. Restart Claude Code if not yet loaded.\"}",
+    "timestamp": "2026-01-17T20:53:33.472413"
+  },
+  {
+    "tool_name": "mcp__washedmcp__getMCPInstallationStatus",
+    "server_name": "washedmcp",
+    "call_id": "toolu_01APgxHf7REXr4PVE9EBWmmx",
+    "parameters": {
+      "mcp_name": "Slack"
+    },
+    "result": "{\"installed\":false,\"mcp_name\":\"Slack\",\"description\":\"Send messages, manage channels, and access workspace history through Slack.\",\"documentation\":\"https://github.com/korotovsky/slack-mcp-server\",\"requires_credentials\":true,\"required_env_vars\":[{\"name\":\"SLACK_BOT_TOKEN\",\"description\":\"Slack Bot User OAuth Token\"}],\"install_command\":\"install_mcp_server(\\\"Slack\\\", env_vars: { \\\"SLACK_BOT_TOKEN\\\": \\\"your_value\\\" })\"}",
+    "timestamp": "2026-01-17T20:53:38.002976"
+  },
+  {
+    "tool_name": "mcp__washedmcp__listInstalledServers",
+    "server_name": "washedmcp",
+    "call_id": "toolu_01QSAriNZpL9A5EfN8qrJZGA",
+    "parameters": {},
+    "result": "{\"count\":2,\"servers\":[{\"name\":\"@smithery-ai/github\",\"displayName\":\"Github\",\"type\":\"local\",\"status\":\"connected\",\"installedAt\":\"2026-01-17T19:25:06.098Z\",\"lastUsed\":\"2026-01-17T20:17:21.035Z\"},{\"name\":\"googlesheets\",\"displayName\":\"Google Sheets\",\"type\":\"local\",\"status\":\"connected\",\"installedAt\":\"2026-01-17T20:40:23.383Z\"}]}",
+    "timestamp": "2026-01-17T20:54:32.148279"
+  },
+  {
+    "tool_name": "mcp__washedmcp__searchSmithery",
+    "server_name": "washedmcp",
+    "call_id": "toolu_01WgsTMdj9R7WnVp72weMWwk",
+    "parameters": {
+      "query": "google sheets",
+      "limit": "5"
+    },
+    "result": "{\"query\":\"google sheets\",\"totalFound\":5,\"servers\":[{\"name\":\"googlesheets\",\"displayName\":\"Google Sheets\",\"description\":\"Google Sheets is a cloud-based spreadsheet tool enabling real-time collaboration, data analysis, and integration with other Google Workspace apps\",\"isRemote\":false,\"isVerified\":false,\"useCount\":2510,\"homepage\":\"https://smithery.ai/server/googlesheets\"},{\"name\":\"googlesuper\",\"displayName\":\"Google Super\",\"description\":\"Google Super App combines all Google services including Drive, Calendar, Gmail, Sheets, Analytics, Ads, and more, providing a unified platform for seamless integration and management of your digital l\",\"isRemote\":false,\"isVerified\":false,\"useCount\":4484,\"homepage\":\"https://smithery.ai/server/googlesuper\"},{\"name\":\"googlecalendar\",\"displayName\":\"Google Calendar\",\"description\":\"Google Calendar is a time management tool providing scheduling features, event reminders, and integration with email and other apps for streamlined organization\",\"isRemote\":false,\"isVerified\":false,\"useCount\":5894,\"homepage\":\"https://smithery.ai/server/googlecalendar\"},{\"name\":\"googletasks\",\"displayName\":\"Google Tasks\",\"description\":\"Google Tasks provides a simple to-do list and task management system integrated into Gmail and Google Calendar for quick and easy tracking\",\"isRemote\":false,\"isVerified\":false,\"useCount\":787,\"homepage\":\"https://smithery.ai/server/googletasks\"},{\"name\":\"googledocs\",\"displayName\":\"Google Docs\",\"description\":\"Google Docs is a cloud-based word processor with real-time collaboration, version history, and integration with other Google Workspace apps\",\"isRemote\":false,\"isVerified\":false,\"useCount\":592,\"homepage\":\"https://smithery.ai/server/googledocs\"}]}",
+    "timestamp": "2026-01-17T21:11:45.853531"
+  },
+  {
+    "tool_name": "mcp__washedmcp__installFromSmithery",
+    "server_name": "washedmcp",
+    "call_id": "toolu_01FVBgSECBdXvpzyXNuCzash",
+    "parameters": {
+      "serverName": "googlesheets"
+    },
+    "result": "{\"success\":true,\"alreadyInstalled\":true,\"server\":{\"qualifiedName\":\"googlesheets\",\"displayName\":\"Google Sheets\",\"connectionType\":\"local\",\"status\":\"connected\",\"installedAt\":\"2026-01-17T20:40:23.383Z\",\"config\":{\"command\":\"npx\",\"args\":[\"-y\",\"googlesheets\"]}}}",
+    "timestamp": "2026-01-17T21:11:57.298997"
+  },
+  {
+    "tool_name": "mcp__washedmcp__searchSmithery",
+    "server_name": "washedmcp",
+    "call_id": "toolu_01GuabjuBvtMmM1f59FD2ozb",
+    "parameters": {
+      "query": "todoist",
+      "limit": "5"
+    },
+    "result": "{\"query\":\"todoist\",\"totalFound\":5,\"servers\":[{\"name\":\"todoist\",\"displayName\":\"Todoist\",\"description\":\"Todoist is a task management tool allowing users to create to-do lists, set deadlines, and collaborate on projects with reminders and cross-platform syncing\",\"isRemote\":false,\"isVerified\":false,\"useCount\":1149,\"homepage\":\"https://smithery.ai/server/todoist\"},{\"name\":\"@Geralt1983/mcp-todoist\",\"displayName\":\"mcp-todoist\",\"description\":\"Streamline Todoist task management from your workflow. Create, update, move, complete, and delete tasks with natural filters like today or overdue, and manage projects, sections, and labels. Plan your\",\"isRemote\":false,\"isVerified\":false,\"useCount\":17831,\"homepage\":\"https://smithery.ai/server/@Geralt1983/mcp-todoist\"},{\"name\":\"@Hint-Services/mcp-todoist\",\"displayName\":\"Todoist \",\"description\":\"Manage tasks, projects, sections, and labels in Todoist from your workflow. Create, update, complete, and batch-edit items using natural language and flexible filters. Streamline daily planning, proje\",\"isRemote\":false,\"isVerified\":false,\"useCount\":315,\"homepage\":\"https://smithery.ai/server/@Hint-Services/mcp-todoist\"},{\"name\":\"@miottid/todoist-mcp\",\"displayName\":\"Todoist Integration\",\"description\":\"Connect your LLM to interact with Todoist tasks and projects. Access all the Todoist API right from your LLM.\",\"isRemote\":false,\"isVerified\":false,\"useCount\":69,\"homepage\":\"https://smithery.ai/server/@miottid/todoist-mcp\"},{\"name\":\"@Doist/todoist-mcp\",\"displayName\":\"Todoist Integration Server\",\"description\":\"Enable your LLM to interact seamlessly with Todoist by connecting to this server. Manage tasks, projects, and more using the full Todoist API through natural language commands. Simplify productivity w\",\"isRemote\":false,\"isVerified\":false,\"useCount\":64,\"homepage\":\"https://smithery.ai/server/@Doist/todoist-mcp\"}]}",
+    "timestamp": "2026-01-17T21:13:45.944076"
+  },
+  {
+    "tool_name": "mcp__washedmcp__installFromSmithery",
+    "server_name": "washedmcp",
+    "call_id": "toolu_01TTt4Evp14DSNfT3AaPf4bd",
+    "parameters": {
+      "serverName": "@Geralt1983/mcp-todoist"
+    },
+    "result": "{\"success\":true,\"server\":{\"qualifiedName\":\"@Geralt1983/mcp-todoist\",\"displayName\":\"mcp-todoist\",\"connectionType\":\"local\",\"status\":\"connected\",\"installedAt\":\"2026-01-17T21:13:50.722Z\",\"config\":{\"command\":\"npx\",\"args\":[\"-y\",\"@Geralt1983/mcp-todoist\"],\"env\":{}}},\"installCommand\":\"npx -y @Geralt1983/mcp-todoist\",\"needsRestart\":true,\"config_written\":true,\"steps\":[\"Installing mcp-todoist (local)...\",\"   Configuring: npx -y @Geralt1983/mcp-todoist\",\"   Configuration written to .mcp.json\"],\"next_steps\":[\"Configuration written to .mcp.json\",\"Restart Claude Code to load the new MCP server\",\"The mcp-todoist tools will then be available\"]}",
+    "timestamp": "2026-01-17T21:13:51.013545"
+  },
+  {
+    "tool_name": "mcp__washedmcp__searchSmithery",
+    "server_name": "washedmcp",
+    "call_id": "toolu_01GuMjokrSYkXCZPngzamFB6",
+    "parameters": {
+      "query": "todoist"
+    },
+    "result": "{\"query\":\"todoist\",\"totalFound\":5,\"servers\":[{\"name\":\"todoist\",\"displayName\":\"Todoist\",\"description\":\"Todoist is a task management tool allowing users to create to-do lists, set deadlines, and collaborate on projects with reminders and cross-platform syncing\",\"isRemote\":false,\"isVerified\":false,\"useCount\":1149,\"homepage\":\"https://smithery.ai/server/todoist\"},{\"name\":\"@Geralt1983/mcp-todoist\",\"displayName\":\"mcp-todoist\",\"description\":\"Streamline Todoist task management from your workflow. Create, update, move, complete, and delete tasks with natural filters like today or overdue, and manage projects, sections, and labels. Plan your\",\"isRemote\":false,\"isVerified\":false,\"useCount\":17831,\"homepage\":\"https://smithery.ai/server/@Geralt1983/mcp-todoist\"},{\"name\":\"@Hint-Services/mcp-todoist\",\"displayName\":\"Todoist \",\"description\":\"Manage tasks, projects, sections, and labels in Todoist from your workflow. Create, update, complete, and batch-edit items using natural language and flexible filters. Streamline daily planning, proje\",\"isRemote\":false,\"isVerified\":false,\"useCount\":315,\"homepage\":\"https://smithery.ai/server/@Hint-Services/mcp-todoist\"},{\"name\":\"@miottid/todoist-mcp\",\"displayName\":\"Todoist Integration\",\"description\":\"Connect your LLM to interact with Todoist tasks and projects. Access all the Todoist API right from your LLM.\",\"isRemote\":false,\"isVerified\":false,\"useCount\":69,\"homepage\":\"https://smithery.ai/server/@miottid/todoist-mcp\"},{\"name\":\"@Doist/todoist-mcp\",\"displayName\":\"Todoist Integration Server\",\"description\":\"Enable your LLM to interact seamlessly with Todoist by connecting to this server. Manage tasks, projects, and more using the full Todoist API through natural language commands. Simplify productivity w\",\"isRemote\":false,\"isVerified\":false,\"useCount\":64,\"homepage\":\"https://smithery.ai/server/@Doist/todoist-mcp\"}]}",
+    "timestamp": "2026-01-17T21:15:02.489085"
+  },
+  {
+    "tool_name": "mcp__washedmcp__installFromSmithery",
+    "server_name": "washedmcp",
+    "call_id": "toolu_01K9uRiuqNnDsjZoTGt9EzTv",
+    "parameters": {
+      "serverName": "@Geralt1983/mcp-todoist"
+    },
+    "result": "{\"success\":true,\"alreadyInstalled\":true,\"server\":{\"qualifiedName\":\"@Geralt1983/mcp-todoist\",\"displayName\":\"mcp-todoist\",\"connectionType\":\"local\",\"status\":\"connected\",\"installedAt\":\"2026-01-17T21:13:50.722Z\",\"config\":{\"command\":\"npx\",\"args\":[\"-y\",\"@Geralt1983/mcp-todoist\"],\"env\":{}}}}",
+    "timestamp": "2026-01-17T21:15:07.789580"
+  },
+  {
+    "tool_name": "mcp__washedmcp__executeOnServer",
+    "server_name": "washedmcp",
+    "call_id": "toolu_01BkZoW6fMBQELh6HeW45g6v",
+    "parameters": {
+      "serverName": "@Geralt1983/mcp-todoist",
+      "toolName": "create_task",
+      "params": "{\"content\": \"run 5k\"}"
+    },
+    "result": "{\"success\":true,\"guidance\":true,\"server\":\"@Geralt1983/mcp-todoist\",\"connectionType\":\"local\",\"requestedTool\":\"create_task\",\"params\":\"{\\\"content\\\": \\\"run 5k\\\"}\",\"instruction\":\"To execute \\\"create_task\\\" on mcp-todoist, use the MCP tool: mcp___Geralt1983_mcp-todoist__create_task\",\"note\":\"Server should be available for tool execution\"}",
+    "timestamp": "2026-01-17T21:15:15.228142"
+  },
+  {
+    "tool_name": "mcp__washedmcp__installFromSmithery",
+    "server_name": "washedmcp",
+    "call_id": "toolu_01Kt53JikA1LrwXNFffzbtbd",
+    "parameters": {
+      "serverName": "todoist",
+      "connectionType": "remote"
+    },
+    "result": "{\"success\":true,\"server\":{\"qualifiedName\":\"todoist\",\"displayName\":\"Todoist\",\"connectionType\":\"remote\",\"status\":\"connected\",\"installedAt\":\"2026-01-17T21:15:50.795Z\",\"config\":{\"command\":\"npx\",\"args\":[\"-y\",\"todoist\"],\"env\":{}}},\"installCommand\":\"npx -y todoist\",\"needsRestart\":false,\"config_written\":true,\"steps\":[\"Installing Todoist (remote)...\",\"   Configuring: npx -y todoist\",\"   Configuration written to .mcp.json\"],\"next_steps\":[\"Configuration written to .mcp.json\",\"Restart Claude Code to load the new MCP server\",\"The Todoist tools will then be available\"]}",
+    "timestamp": "2026-01-17T21:15:51.079943"
+  },
+  {
+    "tool_name": "mcp__washedmcp__installFromSmithery",
+    "server_name": "washedmcp",
+    "call_id": "toolu_01XRUtyacYQYK6iWjfmsnehC",
+    "parameters": {
+      "serverName": "todoist",
+      "connectionType": "remote",
+      "envVars": "{\"TODOIST_API_TOKEN\": \"aeef0fef31e0e62510441f264a41f8170c5c30ab\"}"
+    },
+    "result": "{\"success\":true,\"alreadyInstalled\":true,\"server\":{\"qualifiedName\":\"todoist\",\"displayName\":\"Todoist\",\"connectionType\":\"remote\",\"status\":\"connected\",\"installedAt\":\"2026-01-17T21:15:50.795Z\",\"config\":{\"command\":\"npx\",\"args\":[\"-y\",\"todoist\"],\"env\":{}}}}",
+    "timestamp": "2026-01-17T21:16:31.677848"
+  },
+  {
+    "tool_name": "mcp__washedmcp__listInstalledServers",
+    "server_name": "washedmcp",
+    "call_id": "toolu_012yx7JaTue1GY5K7JH93Ezk",
+    "parameters": {},
+    "result": "{\"count\":4,\"servers\":[{\"name\":\"@smithery-ai/github\",\"displayName\":\"Github\",\"type\":\"local\",\"status\":\"connected\",\"installedAt\":\"2026-01-17T19:25:06.098Z\",\"lastUsed\":\"2026-01-17T20:17:21.035Z\"},{\"name\":\"googlesheets\",\"displayName\":\"Google Sheets\",\"type\":\"local\",\"status\":\"connected\",\"installedAt\":\"2026-01-17T20:40:23.383Z\"},{\"name\":\"@Geralt1983/mcp-todoist\",\"displayName\":\"mcp-todoist\",\"type\":\"local\",\"status\":\"connected\",\"installedAt\":\"2026-01-17T21:13:50.722Z\",\"lastUsed\":\"2026-01-17T21:15:14.973Z\"},{\"name\":\"todoist\",\"displayName\":\"Todoist\",\"type\":\"remote\",\"status\":\"connected\",\"installedAt\":\"2026-01-17T21:15:50.795Z\"}]}",
+    "timestamp": "2026-01-17T21:18:25.907828"
+  },
+  {
+    "tool_name": "mcp__washedmcp__searchSmithery",
+    "server_name": "washedmcp",
+    "call_id": "toolu_01WJH5fQrmDhJ7FZofRge1Gv",
+    "parameters": {
+      "query": "todoist"
+    },
+    "result": "{\"query\":\"todoist\",\"totalFound\":5,\"servers\":[{\"name\":\"todoist\",\"displayName\":\"Todoist\",\"description\":\"Todoist is a task management tool allowing users to create to-do lists, set deadlines, and collaborate on projects with reminders and cross-platform syncing\",\"isRemote\":false,\"isVerified\":false,\"useCount\":1149,\"homepage\":\"https://smithery.ai/server/todoist\"},{\"name\":\"@Geralt1983/mcp-todoist\",\"displayName\":\"mcp-todoist\",\"description\":\"Streamline Todoist task management from your workflow. Create, update, move, complete, and delete tasks with natural filters like today or overdue, and manage projects, sections, and labels. Plan your\",\"isRemote\":false,\"isVerified\":false,\"useCount\":17831,\"homepage\":\"https://smithery.ai/server/@Geralt1983/mcp-todoist\"},{\"name\":\"@Hint-Services/mcp-todoist\",\"displayName\":\"Todoist \",\"description\":\"Manage tasks, projects, sections, and labels in Todoist from your workflow. Create, update, complete, and batch-edit items using natural language and flexible filters. Streamline daily planning, proje\",\"isRemote\":false,\"isVerified\":false,\"useCount\":315,\"homepage\":\"https://smithery.ai/server/@Hint-Services/mcp-todoist\"},{\"name\":\"@miottid/todoist-mcp\",\"displayName\":\"Todoist Integration\",\"description\":\"Connect your LLM to interact with Todoist tasks and projects. Access all the Todoist API right from your LLM.\",\"isRemote\":false,\"isVerified\":false,\"useCount\":69,\"homepage\":\"https://smithery.ai/server/@miottid/todoist-mcp\"},{\"name\":\"@Doist/todoist-mcp\",\"displayName\":\"Todoist Integration Server\",\"description\":\"Enable your LLM to interact seamlessly with Todoist by connecting to this server. Manage tasks, projects, and more using the full Todoist API through natural language commands. Simplify productivity w\",\"isRemote\":false,\"isVerified\":false,\"useCount\":64,\"homepage\":\"https://smithery.ai/server/@Doist/todoist-mcp\"}]}",
+    "timestamp": "2026-01-17T21:18:26.246208"
+  },
+  {
+    "tool_name": "mcp__washedmcp__executeOnServer",
+    "server_name": "washedmcp",
+    "call_id": "toolu_017V7v4buq7scJ4Txkv3PWLX",
+    "parameters": {
+      "serverName": "@Geralt1983/mcp-todoist",
+      "toolName": "create_task",
+      "params": "{\"content\": \"run 5k\"}"
+    },
+    "result": "{\"success\":true,\"guidance\":true,\"server\":\"@Geralt1983/mcp-todoist\",\"connectionType\":\"local\",\"requestedTool\":\"create_task\",\"params\":\"{\\\"content\\\": \\\"run 5k\\\"}\",\"instruction\":\"To execute \\\"create_task\\\" on mcp-todoist, use the MCP tool: mcp___Geralt1983_mcp-todoist__create_task\",\"note\":\"Server should be available for tool execution\"}",
+    "timestamp": "2026-01-17T21:18:31.725947"
+  },
+  {
+    "tool_name": "mcp__Github_MCP__search_users",
+    "server_name": "Github Mcp",
+    "call_id": "toolu_01FE9CbcepPzUH2wVuw2E2BB",
+    "parameters": {
+      "q": "clarsbyte"
+    },
+    "result": [
+      {
+        "type": "text",
+        "text": "{\n  \"total_count\": 1,\n  \"incomplete_results\": false,\n  \"items\": [\n    {\n      \"login\": \"clarsbyte\",\n      \"id\": 92129914,\n      \"node_id\": \"U_kgDOBX3Keg\",\n      \"avatar_url\": \"https://avatars.githubusercontent.com/u/92129914?v=4\",\n      \"gravatar_id\": \"\",\n      \"url\": \"https://api.github.com/users/clarsbyte\",\n      \"html_url\": \"https://github.com/clarsbyte\",\n      \"followers_url\": \"https://api.github.com/users/clarsbyte/followers\",\n      \"following_url\": \"https://api.github.com/users/clarsbyte/following{/other_user}\",\n      \"gists_url\": \"https://api.github.com/users/clarsbyte/gists{/gist_id}\",\n      \"starred_url\": \"https://api.github.com/users/clarsbyte/starred{/owner}{/repo}\",\n      \"subscriptions_url\": \"https://api.github.com/users/clarsbyte/subscriptions\",\n      \"organizations_url\": \"https://api.github.com/users/clarsbyte/orgs\",\n      \"repos_url\": \"https://api.github.com/users/clarsbyte/repos\",\n      \"events_url\": \"https://api.github.com/users/clarsbyte/events{/privacy}\",\n      \"received_events_url\": \"https://api.github.com/users/clarsbyte/received_events\",\n      \"type\": \"User\",\n      \"user_view_type\": \"public\",\n      \"site_admin\": false,\n      \"score\": 1\n    }\n  ]\n}"
+      }
+    ],
+    "timestamp": "2026-01-17T21:30:27.017472"
+  },
+  {
+    "tool_name": "mcp__Github_MCP__search_repositories",
+    "server_name": "Github Mcp",
+    "call_id": "toolu_01JgmuM6sPa6fi8STcu2h2ub",
+    "parameters": {
+      "query": "user:clarsbyte",
+      "perPage": 10
+    },
+    "result": [
+      {
+        "type": "text",
+        "text": "{\n  \"total_count\": 63,\n  \"incomplete_results\": false,\n  \"items\": [\n    {\n      \"id\": 993659248,\n      \"node_id\": \"R_kgDOOzoJcA\",\n      \"name\": \"whoareyoubymusic\",\n      \"full_name\": \"clarsbyte/whoareyoubymusic\",\n      \"private\": false,\n      \"owner\": {\n        \"login\": \"clarsbyte\",\n        \"id\": 92129914,\n        \"node_id\": \"U_kgDOBX3Keg\",\n        \"avatar_url\": \"https://avatars.githubusercontent.com/u/92129914?v=4\",\n        \"url\": \"https://api.github.com/users/clarsbyte\",\n        \"html_url\": \"https://github.com/clarsbyte\",\n        \"type\": \"User\"\n      },\n      \"html_url\": \"https://github.com/clarsbyte/whoareyoubymusic\",\n      \"description\": \"A web app that describes the user based on the user's Spotify.\",\n      \"fork\": false,\n      \"url\": \"https://api.github.com/repos/clarsbyte/whoareyoubymusic\",\n      \"created_at\": \"2025-05-31T08:30:59Z\",\n      \"updated_at\": \"2025-12-16T14:48:34Z\",\n      \"pushed_at\": \"2025-06-05T07:33:01Z\",\n      \"git_url\": \"git://github.com/clarsbyte/whoareyoubymusic.git\",\n      \"ssh_url\": \"git@github.com:clarsbyte/whoareyoubymusic.git\",\n      \"clone_url\": \"https://github.com/clarsbyte/whoareyoubymusic.git\",\n      \"default_branch\": \"main\"\n    },\n    {\n      \"id\": 883268212,\n      \"node_id\": \"R_kgDONKWadA\",\n      \"name\": \"Anti-Phone-Study-Club\",\n      \"full_name\": \"clarsbyte/Anti-Phone-Study-Club\",\n      \"private\": false,\n      \"owner\": {\n        \"login\": \"clarsbyte\",\n        \"id\": 92129914,\n        \"node_id\": \"U_kgDOBX3Keg\",\n        \"avatar_url\": \"https://avatars.githubusercontent.com/u/92129914?v=4\",\n        \"url\": \"https://api.github.com/users/clarsbyte\",\n        \"html_url\": \"https://github.com/clarsbyte\",\n        \"type\": \"User\"\n      },\n      \"html_url\": \"https://github.com/clarsbyte/Anti-Phone-Study-Club\",\n      \"description\": \"Python program that gives you a voice notification whenever you open your phone using YOLOv8\",\n      \"fork\": false,\n      \"url\": \"https://api.github.com/repos/clarsbyte/Anti-Phone-Study-Club\",\n      \"created_at\": \"2024-11-04T17:03:10Z\",\n      \"updated_at\": \"2025-12-16T14:49:34Z\",\n      \"pushed_at\": \"2024-11-06T03:53:21Z\",\n      \"git_url\": \"git://github.com/clarsbyte/Anti-Phone-Study-Club.git\",\n      \"ssh_url\": \"git@github.com:clarsbyte/Anti-Phone-Study-Club.git\",\n      \"clone_url\": \"https://github.com/clarsbyte/Anti-Phone-Study-Club.git\",\n      \"default_branch\": \"main\"\n    },\n    {\n      \"id\": 978030482,\n      \"node_id\": \"R_kgDOOkuPkg\",\n      \"name\": \"cheetahjaguarclassifier\",\n      \"full_name\": \"clarsbyte/cheetahjaguarclassifier\",\n      \"private\": false,\n      \"owner\": {\n        \"login\": \"clarsbyte\",\n        \"id\": 92129914,\n        \"node_id\": \"U_kgDOBX3Keg\",\n        \"avatar_url\": \"https://avatars.githubusercontent.com/u/92129914?v=4\",\n        \"url\": \"https://api.github.com/users/clarsbyte\",\n        \"html_url\": \"https://github.com/clarsbyte\",\n        \"type\": \"User\"\n      },\n      \"html_url\": \"https://github.com/clarsbyte/cheetahjaguarclassifier\",\n      \"description\": null,\n      \"fork\": false,\n      \"url\": \"https://api.github.com/repos/clarsbyte/cheetahjaguarclassifier\",\n      \"created_at\": \"2025-05-05T11:11:51Z\",\n      \"updated_at\": \"2025-10-28T00:02:39Z\",\n      \"pushed_at\": \"2025-05-06T10:38:05Z\",\n      \"git_url\": \"git://github.com/clarsbyte/cheetahjaguarclassifier.git\",\n      \"ssh_url\": \"git@github.com:clarsbyte/cheetahjaguarclassifier.git\",\n      \"clone_url\": \"https://github.com/clarsbyte/cheetahjaguarclassifier.git\",\n      \"default_branch\": \"main\"\n    },\n    {\n      \"id\": 796123005,\n      \"node_id\": \"R_kgDOL3PffQ\",\n      \"name\": \"Image-Summarizer\",\n      \"full_name\": \"clarsbyte/Image-Summarizer\",\n      \"private\": false,\n      \"owner\": {\n        \"login\": \"clarsbyte\",\n        \"id\": 92129914,\n        \"node_id\": \"U_kgDOBX3Keg\",\n        \"avatar_url\": \"https://avatars.githubusercontent.com/u/92129914?v=4\",\n        \"url\": \"https://api.github.com/users/clarsbyte\",\n        \"html_url\": \"https://github.com/clarsbyte\",\n        \"type\": \"User\"\n      },\n      \"html_url\": \"https://github.com/clarsbyte/Image-Summarizer\",\n      \"description\": \"Uses Tesseract and Google's Gemini Pro to summarize text displayed in an image. \",\n      \"fork\": false,\n      \"url\": \"https://api.github.com/repos/clarsbyte/Image-Summarizer\",\n      \"created_at\": \"2024-05-05T02:05:16Z\",\n      \"updated_at\": \"2025-05-12T13:58:11Z\",\n      \"pushed_at\": \"2024-05-05T13:16:51Z\",\n      \"git_url\": \"git://github.com/clarsbyte/Image-Summarizer.git\",\n      \"ssh_url\": \"git@github.com:clarsbyte/Image-Summarizer.git\",\n      \"clone_url\": \"https://github.com/clarsbyte/Image-Summarizer.git\",\n      \"default_branch\": \"main\"\n    },\n    {\n      \"id\": 983231613,\n      \"node_id\": \"R_kgDOOprsfQ\",\n      \"name\": \"arduino-joystick-keyboard-control\",\n      \"full_name\": \"clarsbyte/arduino-joystick-keyboard-control\",\n      \"private\": false,\n      \"owner\": {\n        \"login\": \"clarsbyte\",\n        \"id\": 92129914,\n        \"node_id\": \"U_kgDOBX3Keg\",\n        \"avatar_url\": \"https://avatars.githubusercontent.com/u/92129914?v=4\",\n        \"url\": \"https://api.github.com/users/clarsbyte\",\n        \"html_url\": \"https://github.com/clarsbyte\",\n        \"type\": \"User\"\n      },\n      \"html_url\": \"https://github.com/clarsbyte/arduino-joystick-keyboard-control\",\n      \"description\": null,\n      \"fork\": false,\n      \"url\": \"https://api.github.com/repos/clarsbyte/arduino-joystick-keyboard-control\",\n      \"created_at\": \"2025-05-14T04:43:43Z\",\n      \"updated_at\": \"2025-05-15T04:56:30Z\",\n      \"pushed_at\": \"2025-05-14T06:12:32Z\",\n      \"git_url\": \"git://github.com/clarsbyte/arduino-joystick-keyboard-control.git\",\n      \"ssh_url\": \"git@github.com:clarsbyte/arduino-joystick-keyboard-control.git\",\n      \"clone_url\": \"https://github.com/clarsbyte/arduino-joystick-keyboard-control.git\",\n      \"default_branch\": \"main\"\n    },\n    {\n      \"id\": 1126098161,\n      \"node_id\": \"R_kgDOQx7k8Q\",\n      \"name\": \"teachover\",\n      \"full_name\": \"clarsbyte/teachover\",\n      \"private\": false,\n      \"owner\": {\n        \"login\": \"clarsbyte\",\n        \"id\": 92129914,\n        \"node_id\": \"U_kgDOBX3Keg\",\n        \"avatar_url\": \"https://avatars.githubusercontent.com/u/92129914?v=4\",\n        \"url\": \"https://api.github.com/users/clarsbyte\",\n        \"html_url\": \"https://github.com/clarsbyte\",\n        \"type\": \"User\"\n      },\n      \"html_url\": \"https://github.com/clarsbyte/teachover\",\n      \"description\": null,\n      \"fork\": false,\n      \"url\": \"https://api.github.com/repos/clarsbyte/teachover\",\n      \"created_at\": \"2026-01-01T05:13:19Z\",\n      \"updated_at\": \"2026-01-03T14:05:36Z\",\n      \"pushed_at\": \"2026-01-01T05:18:21Z\",\n      \"git_url\": \"git://github.com/clarsbyte/teachover.git\",\n      \"ssh_url\": \"git@github.com:clarsbyte/teachover.git\",\n      \"clone_url\": \"https://github.com/clarsbyte/teachover.git\",\n      \"default_branch\": \"main\"\n    },\n    {\n      \"id\": 1102634189,\n      \"node_id\": \"R_kgDOQbjczQ\",\n      \"name\": \"Helix-DB-Hackathon\",\n      \"full_name\": \"clarsbyte/Helix-DB-Hackathon\",\n      \"private\": false,\n      \"owner\": {\n        \"login\": \"clarsbyte\",\n        \"id\": 92129914,\n        \"node_id\": \"U_kgDOBX3Keg\",\n        \"avatar_url\": \"https://avatars.githubusercontent.com/u/92129914?v=4\",\n        \"url\": \"https://api.github.com/users/clarsbyte\",\n        \"html_url\": \"https://github.com/clarsbyte\",\n        \"type\": \"User\"\n      },\n      \"html_url\": \"https://github.com/clarsbyte/Helix-DB-Hackathon\",\n      \"description\": null,\n      \"fork\": false,\n      \"url\": \"https://api.github.com/repos/clarsbyte/Helix-DB-Hackathon\",\n      \"created_at\": \"2025-11-23T20:05:49Z\",\n      \"updated_at\": \"2025-12-15T18:58:58Z\",\n      \"pushed_at\": \"2025-12-15T18:58:55Z\",\n      \"git_url\": \"git://github.com/clarsbyte/Helix-DB-Hackathon.git\",\n      \"ssh_url\": \"git@github.com:clarsbyte/Helix-DB-Hackathon.git\",\n      \"clone_url\": \"https://github.com/clarsbyte/Helix-DB-Hackathon.git\",\n      \"default_branch\": \"main\"\n    },\n    {\n      \"id\": 743192390,\n      \"node_id\": \"R_kgDOLEw3Rg\",\n      \"name\": \"Color-Detection-Protoype\",\n      \"full_name\": \"clarsbyte/Color-Detection-Protoype\",\n      \"private\": false,\n      \"owner\": {\n        \"login\": \"clarsbyte\",\n        \"id\": 92129914,\n        \"node_id\": \"U_kgDOBX3Keg\",\n        \"avatar_url\": \"https://avatars.githubusercontent.com/u/92129914?v=4\",\n        \"url\": \"https://api.github.com/users/clarsbyte\",\n        \"html_url\": \"https://github.com/clarsbyte\",\n        \"type\": \"User\"\n      },\n      \"html_url\": \"https://github.com/clarsbyte/Color-Detection-Protoype\",\n      \"description\": null,\n      \"fork\": false,\n      \"url\": \"https://api.github.com/repos/clarsbyte/Color-Detection-Protoype\",\n      \"created_at\": \"2024-01-14T15:59:43Z\",\n      \"updated_at\": \"2025-10-09T01:19:59Z\",\n      \"pushed_at\": \"2024-01-14T16:00:57Z\",\n      \"git_url\": \"git://github.com/clarsbyte/Color-Detection-Protoype.git\",\n      \"ssh_url\": \"git@github.com:clarsbyte/Color-Detection-Protoype.git\",\n      \"clone_url\": \"https://github.com/clarsbyte/Color-Detection-Protoype.git\",\n      \"default_branch\": \"main\"\n    },\n    {\n      \"id\": 1046124722,\n      \"node_id\": \"R_kgDOPlqYsg\",\n      \"name\": \"work-agent\",\n      \"full_name\": \"clarsbyte/work-agent\",\n      \"private\": false,\n      \"owner\": {\n        \"login\": \"clarsbyte\",\n        \"id\": 92129914,\n        \"node_id\": \"U_kgDOBX3Keg\",\n        \"avatar_url\": \"https://avatars.githubusercontent.com/u/92129914?v=4\",\n        \"url\": \"https://api.github.com/users/clarsbyte\",\n        \"html_url\": \"https://github.com/clarsbyte\",\n        \"type\": \"User\"\n      },\n      \"html_url\": \"https://github.com/clarsbyte/work-agent\",\n      \"description\": \"An AI agent built to ease your work. Integrated with Gmail and Google Calendar.\",\n      \"fork\": false,\n      \"url\": \"https://api.github.com/repos/clarsbyte/work-agent\",\n      \"created_at\": \"2025-08-28T08:16:39Z\",\n      \"updated_at\": \"2025-10-23T21:58:10Z\",\n      \"pushed_at\": \"2025-09-15T01:26:48Z\",\n      \"git_url\": \"git://github.com/clarsbyte/work-agent.git\",\n      \"ssh_url\": \"git@github.com:clarsbyte/work-agent.git\",\n      \"clone_url\": \"https://github.com/clarsbyte/work-agent.git\",\n      \"default_branch\": \"main\"\n    },\n    {\n      \"id\": 792598728,\n      \"node_id\": \"R_kgDOLz4YyA\",\n      \"name\": \"Flag-Quiz\",\n      \"full_name\": \"clarsbyte/Flag-Quiz\",\n      \"private\": false,\n      \"owner\": {\n        \"login\": \"clarsbyte\",\n        \"id\": 92129914,\n        \"node_id\": \"U_kgDOBX3Keg\",\n        \"avatar_url\": \"https://avatars.githubusercontent.com/u/92129914?v=4\",\n        \"url\": \"https://api.github.com/users/clarsbyte\",\n        \"html_url\": \"https://github.com/clarsbyte\",\n        \"type\": \"User\"\n      },\n      \"html_url\": \"https://github.com/clarsbyte/Flag-Quiz\",\n      \"description\": null,\n      \"fork\": false,\n      \"url\": \"https://api.github.com/repos/clarsbyte/Flag-Quiz\",\n      \"created_at\": \"2024-04-27T03:06:58Z\",\n      \"updated_at\": \"2025-08-01T09:00:35Z\",\n      \"pushed_at\": \"2024-05-16T15:26:02Z\",\n      \"git_url\": \"git://github.com/clarsbyte/Flag-Quiz.git\",\n      \"ssh_url\": \"git@github.com:clarsbyte/Flag-Quiz.git\",\n      \"clone_url\": \"https://github.com/clarsbyte/Flag-Quiz.git\",\n      \"default_branch\": \"main\"\n    }\n  ]\n}"
+      }
+    ],
+    "timestamp": "2026-01-17T21:30:35.468526"
+  },
+  {
+    "tool_name": "mcp__washedmcp__listInstalledServers",
+    "server_name": "washedmcp",
+    "call_id": "toolu_01SZepdq33pvbxqHxFeipqA9",
+    "parameters": {},
+    "result": "{\"count\":4,\"servers\":[{\"name\":\"@smithery-ai/github\",\"displayName\":\"Github\",\"type\":\"local\",\"status\":\"connected\",\"installedAt\":\"2026-01-17T19:25:06.098Z\",\"lastUsed\":\"2026-01-17T20:17:21.035Z\"},{\"name\":\"googlesheets\",\"displayName\":\"Google Sheets\",\"type\":\"local\",\"status\":\"connected\",\"installedAt\":\"2026-01-17T20:40:23.383Z\"},{\"name\":\"@Geralt1983/mcp-todoist\",\"displayName\":\"mcp-todoist\",\"type\":\"local\",\"status\":\"connected\",\"installedAt\":\"2026-01-17T21:13:50.722Z\",\"lastUsed\":\"2026-01-17T21:18:31.455Z\"},{\"name\":\"todoist\",\"displayName\":\"Todoist\",\"type\":\"remote\",\"status\":\"connected\",\"installedAt\":\"2026-01-17T21:15:50.795Z\"}]}",
+    "timestamp": "2026-01-17T22:03:09.123145"
+  },
+  {
+    "tool_name": "mcp__washedmcp__installMCPServer",
+    "server_name": "washedmcp",
+    "call_id": "toolu_01Lgz15YpdaJVcT4tC7DceTw",
+    "parameters": {
+      "mcp_name": "tavily"
+    },
+    "result": "{\"success\":false,\"error\":\"MCP \\\"tavily\\\" not found\",\"hint\":\"Use recommend_mcp_servers() or list_all_mcp_servers() to find available MCPs.\"}",
+    "timestamp": "2026-01-17T22:03:13.705384"
+  },
+  {
+    "tool_name": "mcp__washedmcp__analyzeAndExecute",
+    "server_name": "washedmcp",
+    "call_id": "toolu_01C2XspqeFc2iftdtqoJmjxk",
+    "parameters": {
+      "task": "search for flights to Bali tomorrow from New York using tavily web search"
+    },
+    "result": "{\"success\":true,\"task\":\"search for flights to Bali tomorrow from New York using tavily web search\",\"detected_capabilities\":[\"search\"],\"detection_method\":\"gemini\",\"confidence\":0.95,\"server_used\":\"@alperenkocyigit/call-for-papers-mcp\",\"connection_type\":\"local\",\"newly_installed\":true,\"steps\":[\"1. Analyzing task for required capabilities...\",\"   Detected: search (gemini, confidence: 95%)\",\"2. Searching Smithery registry...\",\"   Found: call-for-papers-mcp (@alperenkocyigit/call-for-papers-mcp)\",\"3. Installing call-for-papers-mcp (local)...\",\"   Configuration written to .mcp.json\",\"   Server registered: @alperenkocyigit/call-for-papers-mcp\",\"4. Server @alperenkocyigit/call-for-papers-mcp is ready for use\",\"   NOTE: Restart Claude Code to load the new local server\"],\"next_action\":\"Restart Claude Code to load the server, then use its tools\"}",
+    "timestamp": "2026-01-17T22:03:30.697879"
+  },
+  {
+    "tool_name": "mcp__washedmcp__installFromSmithery",
+    "server_name": "washedmcp",
+    "call_id": "toolu_01SkKrW7qXUcpqVQnVY9dQve",
+    "parameters": {
+      "serverName": "@tavily/mcp-server",
+      "connectionType": "remote"
+    },
+    "result": "{\"success\":true,\"server\":{\"qualifiedName\":\"@tavily-ai/tavily-mcp\",\"displayName\":\"Tavily MCP Server\",\"connectionType\":\"remote\",\"status\":\"connected\",\"installedAt\":\"2026-01-17T22:03:56.819Z\",\"config\":{\"command\":\"npx\",\"args\":[\"-y\",\"@tavily-ai/tavily-mcp\"],\"env\":{}}},\"installCommand\":\"npx -y @tavily-ai/tavily-mcp\",\"needsRestart\":false,\"config_written\":true,\"steps\":[\"Installing Tavily MCP Server (remote)...\",\"   Configuring: npx -y @tavily-ai/tavily-mcp\",\"   Configuration written to .mcp.json\"],\"next_steps\":[\"Configuration written to .mcp.json\",\"Restart Claude Code to load the new MCP server\",\"The Tavily MCP Server tools will then be available\"]}",
+    "timestamp": "2026-01-17T22:03:57.120770"
+  },
+  {
+    "tool_name": "mcp__washedmcp__installFromSmithery",
+    "server_name": "washedmcp",
+    "call_id": "toolu_01LcWTW7mwYYbYX7EGJkas4b",
+    "parameters": {
+      "serverName": "@tavily-ai/tavily-mcp"
+    },
+    "result": "{\"success\":true,\"alreadyInstalled\":true,\"server\":{\"qualifiedName\":\"@tavily-ai/tavily-mcp\",\"displayName\":\"Tavily MCP Server\",\"connectionType\":\"remote\",\"status\":\"connected\",\"installedAt\":\"2026-01-17T22:03:56.819Z\",\"config\":{\"command\":\"npx\",\"args\":[\"-y\",\"@tavily-ai/tavily-mcp\"],\"env\":{}}}}",
+    "timestamp": "2026-01-17T22:06:05.131820"
+  },
+  {
+    "tool_name": "mcp__washedmcp__installFromSmithery",
+    "server_name": "washedmcp",
+    "call_id": "toolu_01KzmLtX6zKyf9qpSMDV1Dcz",
+    "parameters": {
+      "serverName": "@tavily-ai/tavily-mcp",
+      "envVars": "{\"TAVILY_API_KEY\": \"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\"}"
+    },
+    "result": "{\"success\":true,\"alreadyInstalled\":true,\"server\":{\"qualifiedName\":\"@tavily-ai/tavily-mcp\",\"displayName\":\"Tavily MCP Server\",\"connectionType\":\"remote\",\"status\":\"connected\",\"installedAt\":\"2026-01-17T22:03:56.819Z\",\"config\":{\"command\":\"npx\",\"args\":[\"-y\",\"@tavily-ai/tavily-mcp\"],\"env\":{}}}}",
+    "timestamp": "2026-01-17T22:07:03.822810"
+  },
+  {
+    "tool_name": "mcp__washedmcp__installMCPServer",
+    "server_name": "washedmcp",
+    "call_id": "toolu_01ESdxTbp24FBseDaZAVYQTo",
+    "parameters": {
+      "mcp_name": "@tavily-ai/tavily-mcp",
+      "env_vars": "{\"TAVILY_API_KEY\": \"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\"}"
+    },
+    "result": "{\"success\":false,\"error\":\"MCP \\\"@tavily-ai/tavily-mcp\\\" not found\",\"hint\":\"Use recommend_mcp_servers() or list_all_mcp_servers() to find available MCPs.\"}",
+    "timestamp": "2026-01-17T22:07:10.727751"
+  },
+  {
+    "tool_name": "mcp__washedmcp__searchSmithery",
+    "server_name": "washedmcp",
+    "call_id": "toolu_01JQsJ1H37p2m7tepAUZQU5u",
+    "parameters": {
+      "query": "tavily",
+      "limit": "5"
+    },
+    "result": "{\"query\":\"tavily\",\"totalFound\":5,\"servers\":[{\"name\":\"@N3N-Seoul/n3n-search-mcp-server\",\"displayName\":\"Tavily\",\"description\":\"Search the web for high-quality, up-to-date results, extract clean content, crawl sites, and map topics. Streamline research, competitive analysis, and content gathering with fast, targeted queries. C\",\"isRemote\":false,\"isVerified\":false,\"useCount\":150,\"homepage\":\"https://smithery.ai/server/@N3N-Seoul/n3n-search-mcp-server\"},{\"name\":\"@tavily-ai/tavily-mcp\",\"displayName\":\"Tavily MCP Server\",\"description\":\"Enable real-time web search and data extraction capabilities.\",\"isRemote\":false,\"isVerified\":false,\"useCount\":107,\"homepage\":\"https://smithery.ai/server/@tavily-ai/tavily-mcp\"},{\"name\":\"@Jeetanshu18/tavily-mcp\",\"displayName\":\"Tavily Web Search and Extraction Server\",\"description\":\"Enable AI assistants to perform real-time web searches, extract data from web pages, map website structures, and crawl websites systematically. Enhance your AI's capabilities with powerful tools for i\",\"isRemote\":false,\"isVerified\":false,\"useCount\":17,\"homepage\":\"https://smithery.ai/server/@Jeetanshu18/tavily-mcp\"},{\"name\":\"@baranwang/mcp-deep-research\",\"displayName\":\"Deep Research\",\"description\":\"Search the web for information effortlessly. Leverage the power of the Tavily API to enhance your research capabilities with maximum efficiency. Configure your search parameters and get started quickl\",\"isRemote\":false,\"isVerified\":false,\"useCount\":2,\"homepage\":\"https://smithery.ai/server/@baranwang/mcp-deep-research\"},{\"name\":\"@jinyinghua/simple-search\",\"displayName\":\"simple-search\",\"description\":\"Simple Tavily Search MCP Server  \\nThis is a simplified version of the Tavily search server for Smithery.\",\"isRemote\":false,\"isVerified\":false,\"useCount\":2,\"homepage\":\"https://smithery.ai/server/@jinyinghua/simple-search\"}]}",
+    "timestamp": "2026-01-17T22:08:42.598439"
+  },
+  {
+    "tool_name": "mcp__washedmcp__installFromSmithery",
+    "server_name": "washedmcp",
+    "call_id": "toolu_01P1DAVxRjaDafbhhr8nDA9y",
+    "parameters": {
+      "serverName": "@tavily-ai/tavily-mcp",
+      "envVars": "{\"TAVILY_API_KEY\": \"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\"}"
+    },
+    "result": "{\"success\":true,\"alreadyInstalled\":true,\"server\":{\"qualifiedName\":\"@tavily-ai/tavily-mcp\",\"displayName\":\"Tavily MCP Server\",\"connectionType\":\"remote\",\"status\":\"connected\",\"installedAt\":\"2026-01-17T22:03:56.819Z\",\"config\":{\"command\":\"npx\",\"args\":[\"-y\",\"@tavily-ai/tavily-mcp\"],\"env\":{}}}}",
+    "timestamp": "2026-01-17T22:08:51.889982"
+  }
+]
