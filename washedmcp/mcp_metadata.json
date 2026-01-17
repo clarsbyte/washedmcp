@@ -1,0 +1,793 @@
+{
+  "version": "1.0.0",
+  "last_updated": "2025-12-17T00:00:00Z",
+  "mcps": {
+    "github-mcp": {
+      "name": "Github MCP",
+      "description": "The GitHub MCP Server connects AI tools directly to GitHub's platform. This gives AI agents, assistants, and chatbots the ability to read repositories and code files, manage issues and PRs, analyze code, and automate workflows.",
+      "documentation": "https://github.com/github/github-mcp-server",
+      "category": "development",
+      "installation": {
+        "primary_method": "npx",
+        "methods": {
+          "npx": {
+            "package": "@modelcontextprotocol/server-github",
+            "registry": "npmjs",
+            "command_template": "npx -y {package}",
+            "requirements": {
+              "node": ">=18.0.0",
+              "npm": ">=9.0.0"
+            },
+            "tested": true,
+            "last_verified": "2025-12-15",
+            "success_rate": 0.98
+          },
+          "npm": {
+            "package": "@modelcontextprotocol/server-github",
+            "registry": "npmjs",
+            "install_command": "npm install {package}",
+            "requirements": {
+              "node": ">=18.0.0",
+              "npm": ">=9.0.0"
+            },
+            "tested": true
+          }
+        }
+      },
+      "configuration": {
+        "type": "stdio",
+        "env_vars": {
+          "required": [
+            {
+              "name": "GITHUB_PERSONAL_ACCESS_TOKEN",
+              "description": "GitHub Personal Access Token with repo permissions",
+              "validation": "^gh[ps]_[A-Za-z0-9_]{36,}$",
+              "docs_url": "https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token",
+              "prompt": "Enter your GitHub Personal Access Token (create at https://github.com/settings/tokens):"
+            }
+          ],
+          "optional": []
+        },
+        "command_generation": {
+          "windows": {
+            "command": "npx",
+            "args": ["-y", "@modelcontextprotocol/server-github"]
+          },
+          "unix": {
+            "command": "npx",
+            "args": ["-y", "@modelcontextprotocol/server-github"]
+          }
+        }
+      },
+      "health_check": {
+        "method": "mcp_list_tools",
+        "timeout_seconds": 10,
+        "expected_tools": ["create_issue", "search_repositories", "create_pull_request"]
+      },
+      "capabilities": [
+        "github-integration",
+        "repository-management",
+        "issue-tracking",
+        "pull-requests",
+        "code-analysis",
+        "version-control"
+      ],
+      "tools": [
+        {
+          "name": "create_issue",
+          "description": "Create a new GitHub issue in a repository",
+          "parameters": [
+            {
+              "name": "repository",
+              "type": "string",
+              "required": true,
+              "description": "Repository in owner/repo format"
+            },
+            {
+              "name": "title",
+              "type": "string",
+              "required": true,
+              "description": "Issue title"
+            },
+            {
+              "name": "body",
+              "type": "string",
+              "required": false,
+              "description": "Issue body/description"
+            }
+          ],
+          "returns": "Created issue URL and number",
+          "example": "create_issue(repository='user/repo', title='Bug found', body='Description')"
+        },
+        {
+          "name": "search_repositories",
+          "description": "Search for GitHub repositories",
+          "parameters": [
+            {
+              "name": "query",
+              "type": "string",
+              "required": true,
+              "description": "Search query string"
+            }
+          ],
+          "returns": "List of matching repositories",
+          "example": "search_repositories(query='machine learning')"
+        },
+        {
+          "name": "create_pull_request",
+          "description": "Create a new pull request",
+          "parameters": [
+            {
+              "name": "repository",
+              "type": "string",
+              "required": true,
+              "description": "Repository in owner/repo format"
+            },
+            {
+              "name": "title",
+              "type": "string",
+              "required": true,
+              "description": "Pull request title"
+            },
+            {
+              "name": "head",
+              "type": "string",
+              "required": true,
+              "description": "Branch containing changes"
+            },
+            {
+              "name": "base",
+              "type": "string",
+              "required": true,
+              "description": "Branch to merge into"
+            }
+          ],
+          "returns": "Created pull request URL and number",
+          "example": "create_pull_request(repository='user/repo', title='Add feature', head='feature-branch', base='main')"
+        }
+      ],
+      "use_cases": [
+        "managing GitHub repositories",
+        "creating and tracking issues",
+        "code review workflows",
+        "repository search and analysis",
+        "pull request management"
+      ]
+    },
+    "playwright-mcp": {
+      "name": "Playwright MCP",
+      "description": "A Model Context Protocol server that provides browser automation capabilities using Playwright. This server enables LLMs to interact with web pages, take screenshots, generate test code, web scrapes the page and execute JavaScript in a real browser environment.",
+      "documentation": "https://github.com/executeautomation/mcp-playwright",
+      "category": "automation",
+      "installation": {
+        "primary_method": "npx",
+        "methods": {
+          "npx": {
+            "package": "@executeautomation/playwright-mcp-server",
+            "registry": "npmjs",
+            "command_template": "npx -y {package}",
+            "requirements": {
+              "node": ">=18.0.0",
+              "npm": ">=9.0.0"
+            },
+            "tested": true,
+            "last_verified": "2025-12-18",
+            "success_rate": 0.95,
+            "notes": "May require additional browser downloads on first run"
+          },
+          "npm": {
+            "package": "@executeautomation/playwright-mcp-server",
+            "registry": "npmjs",
+            "install_command": "npm install {package}",
+            "requirements": {
+              "node": ">=18.0.0",
+              "npm": ">=9.0.0"
+            },
+            "tested": true
+          }
+        }
+      },
+      "configuration": {
+        "type": "stdio",
+        "env_vars": {
+          "required": [],
+          "optional": [
+            {
+              "name": "PLAYWRIGHT_HEADLESS",
+              "description": "Run browser in headless mode",
+              "default": "true",
+              "validation": "^(true|false)$"
+            }
+          ]
+        },
+        "command_generation": {
+          "windows": {
+            "command": "npx",
+            "args": ["-y", "@executeautomation/playwright-mcp-server"]
+          },
+          "unix": {
+            "command": "npx",
+            "args": ["-y", "@executeautomation/playwright-mcp-server"]
+          }
+        }
+      },
+      "health_check": {
+        "method": "mcp_list_tools",
+        "timeout_seconds": 15,
+        "expected_tools": ["navigate", "screenshot", "click"]
+      },
+      "capabilities": [
+        "web-scraping",
+        "browser-automation",
+        "screenshots",
+        "web-testing",
+        "javascript-execution",
+        "page-interaction"
+      ],
+      "tools": [
+        {
+          "name": "navigate",
+          "description": "Navigate browser to a specified URL",
+          "parameters": [
+            {
+              "name": "url",
+              "type": "string",
+              "required": true,
+              "description": "Target URL to navigate to"
+            }
+          ],
+          "returns": "Navigation success status",
+          "example": "navigate(url='https://example.com')"
+        },
+        {
+          "name": "screenshot",
+          "description": "Take a screenshot of the current page or element",
+          "parameters": [
+            {
+              "name": "selector",
+              "type": "string",
+              "required": false,
+              "description": "CSS selector for specific element (optional, captures full page if not provided)"
+            },
+            {
+              "name": "path",
+              "type": "string",
+              "required": false,
+              "description": "File path to save screenshot"
+            }
+          ],
+          "returns": "Screenshot image data or file path",
+          "example": "screenshot(selector='#content', path='page.png')"
+        },
+        {
+          "name": "click",
+          "description": "Click on an element on the page",
+          "parameters": [
+            {
+              "name": "selector",
+              "type": "string",
+              "required": true,
+              "description": "CSS selector for the element to click"
+            }
+          ],
+          "returns": "Click success status",
+          "example": "click(selector='button#submit')"
+        },
+        {
+          "name": "extract",
+          "description": "Extract content from the page",
+          "parameters": [
+            {
+              "name": "selector",
+              "type": "string",
+              "required": false,
+              "description": "CSS selector for specific content (optional)"
+            }
+          ],
+          "returns": "Extracted HTML or text content",
+          "example": "extract(selector='.article-content')"
+        }
+      ],
+      "use_cases": [
+        "web scraping and data extraction",
+        "browser automation",
+        "taking screenshots of web pages",
+        "automated web testing",
+        "form filling and submission",
+        "page interaction and navigation"
+      ]
+    },
+    "firebase-mcp": {
+      "name": "Firebase MCP",
+      "description": "You can use the Firebase MCP server to give AI-powered development tools the ability to work with your Firebase projects and your app's codebase.",
+      "documentation": "https://firebase.google.com/docs/ai-assistance/mcp-server#claude",
+      "category": "cloud",
+      "installation": {
+        "primary_method": "npm",
+        "methods": {
+          "npm": {
+            "package": "@google/genkit-mcp",
+            "registry": "npmjs",
+            "install_command": "npm install {package}",
+            "requirements": {
+              "node": ">=18.0.0",
+              "npm": ">=9.0.0"
+            },
+            "tested": false,
+            "notes": "Requires Firebase CLI to be installed separately"
+          }
+        }
+      },
+      "configuration": {
+        "type": "stdio",
+        "env_vars": {
+          "required": [
+            {
+              "name": "FIREBASE_PROJECT_ID",
+              "description": "Your Firebase project ID",
+              "docs_url": "https://console.firebase.google.com/",
+              "prompt": "Enter your Firebase project ID:"
+            }
+          ],
+          "optional": [
+            {
+              "name": "FIREBASE_SERVICE_ACCOUNT",
+              "description": "Path to Firebase service account JSON",
+              "docs_url": "https://firebase.google.com/docs/admin/setup#initialize-sdk"
+            }
+          ]
+        },
+        "command_generation": {
+          "windows": {
+            "command": "node",
+            "args": ["node_modules/@google/genkit-mcp/dist/index.js"]
+          },
+          "unix": {
+            "command": "node",
+            "args": ["node_modules/@google/genkit-mcp/dist/index.js"]
+          }
+        }
+      },
+      "capabilities": [
+        "firebase-integration",
+        "cloud-database",
+        "authentication",
+        "cloud-storage",
+        "realtime-data"
+      ],
+      "tools": [
+        {
+          "name": "query_firestore",
+          "description": "Query data from Firestore database",
+          "parameters": [
+            {
+              "name": "collection",
+              "type": "string",
+              "required": true,
+              "description": "Firestore collection name"
+            },
+            {
+              "name": "query",
+              "type": "object",
+              "required": false,
+              "description": "Query filters"
+            }
+          ],
+          "returns": "Query results from Firestore",
+          "example": "query_firestore(collection='users', query={'age': {'>=': 18}})"
+        },
+        {
+          "name": "write_firestore",
+          "description": "Write data to Firestore database",
+          "parameters": [
+            {
+              "name": "collection",
+              "type": "string",
+              "required": true,
+              "description": "Firestore collection name"
+            },
+            {
+              "name": "data",
+              "type": "object",
+              "required": true,
+              "description": "Data to write"
+            }
+          ],
+          "returns": "Write confirmation with document ID",
+          "example": "write_firestore(collection='users', data={'name': 'John', 'email': 'john@example.com'})"
+        }
+      ],
+      "use_cases": [
+        "cloud database operations",
+        "user authentication",
+        "real-time data synchronization",
+        "cloud file storage",
+        "Firebase project management"
+      ]
+    },
+    "slack-mcp": {
+      "name": "Slack",
+      "description": "Send messages, manage channels, and access workspace history through Slack.",
+      "documentation": "https://github.com/korotovsky/slack-mcp-server",
+      "category": "communication",
+      "installation": {
+        "primary_method": "npm",
+        "methods": {
+          "npm": {
+            "package": "slack-mcp-server",
+            "registry": "npmjs",
+            "install_command": "npm install {package}",
+            "requirements": {
+              "node": ">=16.0.0"
+            },
+            "tested": false
+          }
+        }
+      },
+      "configuration": {
+        "type": "stdio",
+        "env_vars": {
+          "required": [
+            {
+              "name": "SLACK_BOT_TOKEN",
+              "description": "Slack Bot User OAuth Token",
+              "validation": "^xoxb-[0-9]+-[0-9]+-[A-Za-z0-9]+$",
+              "docs_url": "https://api.slack.com/authentication/token-types#bot",
+              "prompt": "Enter your Slack Bot Token (xoxb-...):"
+            }
+          ],
+          "optional": []
+        },
+        "command_generation": {
+          "windows": {
+            "command": "node",
+            "args": ["node_modules/slack-mcp-server/dist/index.js"]
+          },
+          "unix": {
+            "command": "node",
+            "args": ["node_modules/slack-mcp-server/dist/index.js"]
+          }
+        }
+      },
+      "capabilities": [
+        "slack-integration",
+        "team-communication",
+        "message-sending",
+        "channel-management",
+        "workspace-history"
+      ],
+      "tools": [
+        {
+          "name": "send_message",
+          "description": "Send a message to a Slack channel or user",
+          "parameters": [
+            {
+              "name": "channel",
+              "type": "string",
+              "required": true,
+              "description": "Channel ID or name (e.g., #general or C1234567890)"
+            },
+            {
+              "name": "text",
+              "type": "string",
+              "required": true,
+              "description": "Message text to send"
+            }
+          ],
+          "returns": "Message timestamp and channel confirmation",
+          "example": "send_message(channel='#general', text='Hello team!')"
+        },
+        {
+          "name": "list_channels",
+          "description": "List all channels in the workspace",
+          "parameters": [],
+          "returns": "List of channel names and IDs",
+          "example": "list_channels()"
+        },
+        {
+          "name": "get_channel_history",
+          "description": "Get message history from a channel",
+          "parameters": [
+            {
+              "name": "channel",
+              "type": "string",
+              "required": true,
+              "description": "Channel ID or name"
+            },
+            {
+              "name": "limit",
+              "type": "number",
+              "required": false,
+              "description": "Number of messages to retrieve (default: 100)"
+            }
+          ],
+          "returns": "List of messages from the channel",
+          "example": "get_channel_history(channel='#general', limit=50)"
+        }
+      ],
+      "use_cases": [
+        "sending messages to Slack channels",
+        "team communication and notifications",
+        "channel management",
+        "retrieving workspace message history",
+        "Slack bot integration"
+      ]
+    },
+    "supabase-mcp": {
+      "name": "Supabase MCP",
+      "description": "Connect your Supabase projects to Cursor, Claude, Windsurf, and other AI assistants.",
+      "documentation": "https://github.com/supabase-community/supabase-mcp",
+      "category": "database",
+      "installation": {
+        "primary_method": "manual",
+        "methods": {
+          "manual": {
+            "documentation_url": "https://github.com/supabase-community/supabase-mcp"
+          }
+        }
+      },
+      "configuration": {
+        "type": "stdio",
+        "env_vars": {
+          "required": [],
+          "optional": []
+        }
+      }
+    },
+    "grove-public-endpoints-mcp": {
+      "name": "Grove Public Endpoints MCP",
+      "description": "Enables natural language queries and JSON-RPC calls to 69+ blockchain networks through Grove's free public endpoints. Supports Ethereum, Solana, Cosmos chains, and Layer 2 solutions without requiring authentication or API keys.",
+      "documentation": "https://github.com/pokt-network/mcp",
+      "category": "blockchain",
+      "installation": {
+        "primary_method": "manual",
+        "methods": {
+          "manual": {
+            "documentation_url": "https://github.com/pokt-network/mcp"
+          }
+        }
+      },
+      "configuration": {
+        "type": "stdio",
+        "env_vars": {
+          "required": [],
+          "optional": []
+        }
+      }
+    },
+    "cloudflare-playwright-mcp": {
+      "name": "Cloudflare Playwright MCP",
+      "description": "A server that leverages Playwright for automated browser testing and integrates with Cloudflare Workers, enabling AI assistants to control web browsers for navigation, interaction, and screenshots.",
+      "documentation": "https://github.com/cloudflare/playwright-mcp",
+      "category": "automation",
+      "installation": {
+        "primary_method": "manual",
+        "methods": {
+          "manual": {
+            "documentation_url": "https://github.com/cloudflare/playwright-mcp"
+          }
+        }
+      },
+      "configuration": {
+        "type": "stdio",
+        "env_vars": {
+          "required": [],
+          "optional": []
+        }
+      }
+    },
+    "agentset": {
+      "name": "Agentset",
+      "description": "MCP server for Agentset, an open-source platform for Retrieval-Augmented Generation (RAG). Designed for developers who want to build intelligent, document-based applications quickly and efficiently.",
+      "documentation": "https://github.com/agentset-ai/mcp-server",
+      "category": "ai",
+      "installation": {
+        "primary_method": "manual",
+        "methods": {
+          "manual": {
+            "documentation_url": "https://github.com/agentset-ai/mcp-server"
+          }
+        }
+      },
+      "configuration": {
+        "type": "stdio",
+        "env_vars": {
+          "required": [],
+          "optional": []
+        }
+      }
+    },
+    "imagesorcery": {
+      "name": "ImageSorcery",
+      "description": "Provides powerful image manipulation capabilities including resizing, cropping, object detection, OCR text extraction, and finding objects based on text descriptions using Python with OpenCV and Ultralytics",
+      "documentation": "https://github.com/sunriseapps/imagesorcery-mcp",
+      "category": "image-processing",
+      "installation": {
+        "primary_method": "manual",
+        "methods": {
+          "manual": {
+            "documentation_url": "https://github.com/sunriseapps/imagesorcery-mcp"
+          }
+        }
+      },
+      "configuration": {
+        "type": "stdio",
+        "env_vars": {
+          "required": [],
+          "optional": []
+        }
+      },
+      "capabilities": [
+        "image-processing",
+        "image-manipulation",
+        "object-detection",
+        "ocr",
+        "image-analysis"
+      ],
+      "tools": [
+        {
+          "name": "resize_image",
+          "description": "Resize an image to specified dimensions",
+          "parameters": [
+            {
+              "name": "image_path",
+              "type": "string",
+              "required": true,
+              "description": "Path to the input image file"
+            },
+            {
+              "name": "width",
+              "type": "number",
+              "required": true,
+              "description": "Target width in pixels"
+            },
+            {
+              "name": "height",
+              "type": "number",
+              "required": true,
+              "description": "Target height in pixels"
+            }
+          ],
+          "returns": "Path to the resized image",
+          "example": "resize_image(image_path='photo.jpg', width=800, height=600)"
+        },
+        {
+          "name": "crop_image",
+          "description": "Crop an image to specified region",
+          "parameters": [
+            {
+              "name": "image_path",
+              "type": "string",
+              "required": true,
+              "description": "Path to the input image file"
+            },
+            {
+              "name": "x",
+              "type": "number",
+              "required": true,
+              "description": "X coordinate of crop region"
+            },
+            {
+              "name": "y",
+              "type": "number",
+              "required": true,
+              "description": "Y coordinate of crop region"
+            },
+            {
+              "name": "width",
+              "type": "number",
+              "required": true,
+              "description": "Width of crop region"
+            },
+            {
+              "name": "height",
+              "type": "number",
+              "required": true,
+              "description": "Height of crop region"
+            }
+          ],
+          "returns": "Path to the cropped image",
+          "example": "crop_image(image_path='photo.jpg', x=100, y=100, width=400, height=300)"
+        },
+        {
+          "name": "detect_objects",
+          "description": "Detect objects in an image using AI",
+          "parameters": [
+            {
+              "name": "image_path",
+              "type": "string",
+              "required": true,
+              "description": "Path to the input image file"
+            }
+          ],
+          "returns": "List of detected objects with bounding boxes and confidence scores",
+          "example": "detect_objects(image_path='photo.jpg')"
+        },
+        {
+          "name": "extract_text",
+          "description": "Extract text from an image using OCR",
+          "parameters": [
+            {
+              "name": "image_path",
+              "type": "string",
+              "required": true,
+              "description": "Path to the input image file"
+            }
+          ],
+          "returns": "Extracted text content",
+          "example": "extract_text(image_path='document.jpg')"
+        }
+      ],
+      "use_cases": [
+        "image resizing and manipulation",
+        "object detection in images",
+        "OCR and text extraction from images",
+        "image cropping and editing",
+        "automated image processing workflows"
+      ]
+    },
+    "sequential-thinking": {
+      "name": "Sequential Thinking",
+      "description": "Implements a structured sequential thinking process for breaking down complex problems, iteratively refining solutions, and exploring multiple reasoning paths.",
+      "documentation": "https://github.com/modelcontextprotocol/servers/tree/HEAD/src/sequentialthinking",
+      "category": "reasoning",
+      "installation": {
+        "primary_method": "manual",
+        "methods": {
+          "manual": {
+            "documentation_url": "https://github.com/modelcontextprotocol/servers/tree/HEAD/src/sequentialthinking"
+          }
+        }
+      },
+      "configuration": {
+        "type": "stdio",
+        "env_vars": {
+          "required": [],
+          "optional": []
+        }
+      }
+    },
+    "storybook": {
+      "name": "Storybook",
+      "description": "Help agents automatically write and test stories for your UI components",
+      "documentation": "https://github.com/storybookjs/mcp",
+      "category": "ui-testing",
+      "installation": {
+        "primary_method": "manual",
+        "methods": {
+          "manual": {
+            "documentation_url": "https://github.com/storybookjs/mcp"
+          }
+        }
+      },
+      "configuration": {
+        "type": "stdio",
+        "env_vars": {
+          "required": [],
+          "optional": []
+        }
+      }
+    },
+    "unity": {
+      "name": "Unity",
+      "description": "Allow MCP clients to perform Unity Editor actions.",
+      "documentation": "https://github.com/coplaydev/unity-mcp",
+      "category": "game-development",
+      "installation": {
+        "primary_method": "manual",
+        "methods": {
+          "manual": {
+            "documentation_url": "https://github.com/coplaydev/unity-mcp"
+          }
+        }
+      },
+      "configuration": {
+        "type": "stdio",
+        "env_vars": {
+          "required": [],
+          "optional": []
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__playwright__browser_navigate",
+      "mcp__playwright__browser_take_screenshot",
+      "Bash(git remote set-url:*)",
+      "Bash(git remote add:*)",
+      "Bash(git remote:*)",
+      "Bash(git remote remove:*)",
+      "Bash(git rev-parse:*)"
+    ]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "mcp__.*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python .claude/hooks/mcp_json_logger.py",
+            "timeout": 15
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,15 @@
+name,description,docs
+Supabase MCP,"Connect your Supabase projects to Cursor, Claude, Windsurf, and other AI assistants.",https://github.com/supabase-community/supabase-mcp
+Grove Public Endpoints MCP,"Enables natural language queries and JSON-RPC calls to 69+ blockchain networks through Grove's free public endpoints. Supports Ethereum, Solana, Cosmos chains, and Layer 2 solutions without requiring authentication or API keys.",https://github.com/pokt-network/mcp
+Cloudflare Playwright MCP,"A server that leverages Playwright for automated browser testing and integrates with Cloudflare Workers, enabling AI assistants to control web browsers for navigation, interaction, and screenshots.",https://github.com/cloudflare/playwright-mcp
+Firebase MCP,You can use the Firebase MCP server to give AI-powered development tools the ability to work with your Firebase projects and your app's codebase.,https://firebase.google.com/docs/ai-assistance/mcp-server#claude
+Agentset,"MCP server for Agentset, an open-source platform for Retrieval-Augmented Generation (RAG). Designed for developers who want to build intelligent, document-based applications quickly and efficiently.",https://github.com/agentset-ai/mcp-server
+Github MCP,"The GitHub MCP Server connects AI tools directly to GitHub's platform. This gives AI agents, assistants, and chatbots the ability to read repositories and code files, manage issues and PRs, analyze code, and automate workflows. All through natural language interactions.",https://github.com/github/github-mcp-server
+Playwright MCP,"A Model Context Protocol server that provides browser automation capabilities using Playwright. This server enables LLMs to interact with web pages, take screenshots, generate test code, web scrapes the page and execute JavaScript in a real browser environment.",https://github.com/executeautomation/mcp-playwright
+ImageSorcery,"Provides powerful image manipulation capabilities including resizing, cropping, object detection, OCR text extraction, and finding objects based on text descriptions using Python with OpenCV and Ultralytics",https://github.com/sunriseapps/imagesorcery-mcp
+Sequential Thinking,"Implements a structured sequential thinking process for breaking down complex problems, iteratively refining solutions, and exploring multiple reasoning paths.",https://github.com/modelcontextprotocol/servers/tree/HEAD/src/sequentialthinking
+Storybook,Help agents automatically write and test stories for your UI components,https://github.com/storybookjs/mcp
+Slack,"Send messages, manage channels, and access workspace history through Slack.",https://github.com/korotovsky/slack-mcp-server
+Unity,"Allow MCP clients to perform Unity Editor actions.
+
+",https://github.com/coplaydev/unity-mcp
