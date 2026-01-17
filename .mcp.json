@@ -1,5 +1,10 @@
 {
   "mcpServers": {
+    "washedmcp": {
+      "command": "python3",
+      "args": ["src/mcp_server.py"],
+      "cwd": "/Users/pratham/Wash/washedmcp"
+    },
     "Playwright MCP": {
       "type": "stdio",
       "command": "npx",
