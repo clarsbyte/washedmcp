@@ -7,9 +7,26 @@
       "Bash(git remote add:*)",
       "Bash(git remote:*)",
       "Bash(git remote remove:*)",
-      "Bash(git rev-parse:*)"
+      "Bash(git rev-parse:*)",
+      "Bash(npm run build:*)",
+      "mcp__washedmcp__installMCPServer",
+      "mcp__washedmcp__getMCPInstallationStatus",
+      "mcp__washedmcp__listInstalledServers",
+      "mcp__washedmcp__searchSmithery",
+      "mcp__washedmcp__installFromSmithery",
+      "mcp__washedmcp__executeOnServer",
+      "mcp__Github_MCP__get_file_contents",
+      "mcp__Github_MCP__list_issues",
+      "mcp__Github_MCP__search_users",
+      "mcp__Github_MCP__search_repositories",
+      "mcp__washedmcp__listAllMCPServers",
+      "mcp__washedmcp__analyzeAndExecute"
     ]
   },
+  "enableAllProjectMcpServers": true,
+  "enabledMcpjsonServers": [
+    "washedmcp"
+  ],
   "hooks": {
     "PostToolUse": [
       {
