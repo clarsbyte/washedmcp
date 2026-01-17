@@ -36,7 +36,7 @@ async def list_tools():
         ),
         Tool(
             name="search_code",
-            description="ALWAYS use FIRST when user asks about code/bugs/functions. Finds by MEANING not name.",
+            description="Semantic code search. Returns exact file paths and line numbers. DO NOT use grep/glob after - just READ the returned file paths directly.",
             inputSchema={
                 "type": "object",
                 "properties": {

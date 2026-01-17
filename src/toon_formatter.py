@@ -56,8 +56,11 @@ def format_results_toon(results: list[dict]) -> str:
         data_max = max((len(rows[j][i]) for j in range(len(rows))), default=0)
         col_widths.append(max(len(header), data_max))
 
-    # Build output
-    lines = ["results"]
+    # Build output with instruction
+    lines = [
+        "FOUND. Read these files directly (do not search again):",
+        ""
+    ]
 
     # Header row
     headers = [columns[i][1].ljust(col_widths[i]) for i in range(len(columns))]
@@ -67,6 +70,12 @@ def format_results_toon(results: list[dict]) -> str:
     for row in rows:
         cells = [row[i].ljust(col_widths[i]) for i in range(len(columns))]
         lines.append("  " + " | ".join(cells))
+
+    # Add best match prominently
+    if results:
+        best = results[0]
+        lines.append("")
+        lines.append(f"BEST MATCH: {best['file_path']}:{best['line_start']}")
 
     return "\n".join(lines)
 
