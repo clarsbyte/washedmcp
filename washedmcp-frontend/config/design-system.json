@@ -1,0 +1,250 @@
+{
+  "componentVariants": {
+    "hero": [
+      {
+        "id": "hero-centered",
+        "name": "Centered Hero",
+        "description": "Classic centered layout with large headline and call-to-action. Symmetric and balanced design perfect for clean and professional aesthetics.",
+        "themes": ["CLEAN", "LUXE"],
+        "file": "/components/variants/hero/hero-centered.tsx",
+        "features": ["symmetric", "centered_content", "large_typography", "balanced_spacing"],
+        "animationSupport": ["smooth", "gentle", "elegant"]
+      },
+      {
+        "id": "hero-split",
+        "name": "Split Hero",
+        "description": "Content split between text (left) and visual (right). Great for showcasing product images or graphics alongside messaging.",
+        "themes": ["CLEAN", "TECHNICAL"],
+        "file": "/components/variants/hero/hero-split.tsx",
+        "features": ["asymmetric", "image_heavy", "balanced_split", "professional"],
+        "animationSupport": ["smooth", "parallax", "gentle"]
+      },
+      {
+        "id": "hero-bold",
+        "name": "Bold Hero",
+        "description": "Full-screen immersive hero with dramatic animations and strong visual impact. Designed to grab attention immediately.",
+        "themes": ["BOLD", "PLAYFUL"],
+        "file": "/components/variants/hero/hero-bold.tsx",
+        "features": ["fullscreen", "dramatic", "gradient_heavy", "animated_background"],
+        "animationSupport": ["dramatic", "bouncy", "attention", "explosive"]
+      },
+      {
+        "id": "hero-minimal",
+        "name": "Minimal Hero",
+        "description": "Clean, minimal design with generous white space. Focuses on essential message without visual clutter.",
+        "themes": ["CLEAN", "LUXE", "TECHNICAL"],
+        "file": "/components/variants/hero/hero-minimal.tsx",
+        "features": ["minimal", "whitespace_heavy", "focused", "simple"],
+        "animationSupport": ["gentle", "smooth", "elegant"]
+      },
+      {
+        "id": "hero-glassmorphic",
+        "name": "Glassmorphic Hero",
+        "description": "Modern frosted glass aesthetic with blur effects and layered transparency. Contemporary and sophisticated.",
+        "themes": ["CLEAN", "TECHNICAL", "LUXE"],
+        "file": "/components/variants/hero/hero-glassmorphic.tsx",
+        "features": ["glassmorphism", "blur", "transparency", "layered"],
+        "animationSupport": ["smooth", "elegant", "parallax"]
+      }
+    ],
+    "bento": [
+      {
+        "id": "bento-3d",
+        "name": "3D Bento Grid",
+        "description": "Feature grid with 3D tilt effects on hover. Interactive and engaging with depth perception.",
+        "themes": ["BOLD", "PLAYFUL", "TECHNICAL"],
+        "file": "/components/variants/bento/bento-3d.tsx",
+        "features": ["3d_transforms", "interactive", "tilt_effect", "depth"],
+        "animationSupport": ["dramatic", "bouncy", "mechanical"]
+      },
+      {
+        "id": "bento-flat",
+        "name": "Flat Bento Grid",
+        "description": "Minimal flat cards with subtle hover effects. Clean and professional aesthetic.",
+        "themes": ["CLEAN", "LUXE"],
+        "file": "/components/variants/bento/bento-flat.tsx",
+        "features": ["flat_design", "minimal", "subtle_hover", "professional"],
+        "animationSupport": ["smooth", "gentle", "elegant"]
+      },
+      {
+        "id": "bento-cards",
+        "name": "Elevated Cards Bento",
+        "description": "Cards with elevation and shadow. Modern card-based interface with depth.",
+        "themes": ["CLEAN", "PLAYFUL"],
+        "file": "/components/variants/bento/bento-cards.tsx",
+        "features": ["elevation", "shadows", "card_design", "modern"],
+        "animationSupport": ["smooth", "bouncy", "gentle"]
+      },
+      {
+        "id": "bento-masonry",
+        "name": "Masonry Bento Grid",
+        "description": "Pinterest-style masonry layout with varying card heights. Dynamic and organic feel.",
+        "themes": ["PLAYFUL", "BOLD"],
+        "file": "/components/variants/bento/bento-masonry.tsx",
+        "features": ["masonry", "organic", "dynamic_heights", "creative"],
+        "animationSupport": ["bouncy", "dramatic", "playful"]
+      }
+    ],
+    "stacking": [
+      {
+        "id": "stacking-scroll",
+        "name": "GSAP Stacking Scroll",
+        "description": "Cards pin to viewport and transition sequentially using GSAP ScrollTrigger. Smooth and controlled.",
+        "themes": ["CLEAN", "TECHNICAL", "LUXE"],
+        "file": "/components/variants/stacking/stacking-scroll.tsx",
+        "features": ["scroll_triggered", "pinned", "sequential", "gsap"],
+        "animationSupport": ["smooth", "mechanical", "elegant"]
+      },
+      {
+        "id": "stacking-parallax",
+        "name": "Parallax Stacking",
+        "description": "Parallax scrolling with layered depth. Creates immersive 3D-like experience.",
+        "themes": ["BOLD", "PLAYFUL", "LUXE"],
+        "file": "/components/variants/stacking/stacking-parallax.tsx",
+        "features": ["parallax", "depth", "layered", "immersive"],
+        "animationSupport": ["parallax", "smooth", "dramatic"]
+      },
+      {
+        "id": "stacking-morph",
+        "name": "Morphing Stacking",
+        "description": "Cards morph and transform between states. Fluid and dynamic transitions.",
+        "themes": ["BOLD", "PLAYFUL", "TECHNICAL"],
+        "file": "/components/variants/stacking/stacking-morph.tsx",
+        "features": ["morphing", "fluid", "transformations", "dynamic"],
+        "animationSupport": ["dramatic", "bouncy", "glitch"]
+      }
+    ]
+  },
+  "layouts": [
+    {
+      "id": "standard",
+      "name": "Standard Layout",
+      "description": "Traditional top-to-bottom flow with all sections in logical order",
+      "sectionOrder": [
+        "hero",
+        "logoCloud",
+        "stats",
+        "bentoFeatures",
+        "stackingFeatures",
+        "testimonials",
+        "pricing",
+        "cta",
+        "footer"
+      ],
+      "themes": ["CLEAN", "LUXE"]
+    },
+    {
+      "id": "asymmetric",
+      "name": "Asymmetric Layout",
+      "description": "Alternating section widths and positions for dynamic visual flow",
+      "sectionOrder": [
+        "hero",
+        "stats",
+        "bentoFeatures",
+        "logoCloud",
+        "stackingFeatures",
+        "pricing",
+        "testimonials",
+        "cta",
+        "footer"
+      ],
+      "themes": ["BOLD", "PLAYFUL"]
+    },
+    {
+      "id": "minimal",
+      "name": "Minimal Layout",
+      "description": "Focused layout with only essential sections",
+      "sectionOrder": [
+        "hero",
+        "bentoFeatures",
+        "testimonials",
+        "cta",
+        "footer"
+      ],
+      "themes": ["CLEAN", "LUXE", "TECHNICAL"]
+    },
+    {
+      "id": "feature_heavy",
+      "name": "Feature-Heavy Layout",
+      "description": "Emphasizes features and capabilities with expanded sections",
+      "sectionOrder": [
+        "hero",
+        "stats",
+        "bentoFeatures",
+        "stackingFeatures",
+        "logoCloud",
+        "testimonials",
+        "pricing",
+        "cta",
+        "footer"
+      ],
+      "themes": ["TECHNICAL", "BOLD"]
+    },
+    {
+      "id": "social_proof",
+      "name": "Social Proof Layout",
+      "description": "Emphasizes testimonials and social validation early",
+      "sectionOrder": [
+        "hero",
+        "logoCloud",
+        "testimonials",
+        "bentoFeatures",
+        "stats",
+        "stackingFeatures",
+        "pricing",
+        "cta",
+        "footer"
+      ],
+      "themes": ["PLAYFUL", "CLEAN"]
+    }
+  ],
+  "effects": {
+    "particles": {
+      "name": "Particle System",
+      "description": "Floating animated particles in background",
+      "themes": ["BOLD", "PLAYFUL", "TECHNICAL"],
+      "performance": "medium"
+    },
+    "glitch": {
+      "name": "Glitch Effect",
+      "description": "Digital glitch animations and distortions",
+      "themes": ["TECHNICAL", "BOLD"],
+      "performance": "light"
+    },
+    "mesh": {
+      "name": "Gradient Mesh",
+      "description": "Animated gradient mesh backgrounds",
+      "themes": ["BOLD", "CLEAN", "LUXE"],
+      "performance": "medium"
+    },
+    "glow": {
+      "name": "Glow Effects",
+      "description": "Luminous glow effects on interactive elements",
+      "themes": ["BOLD", "TECHNICAL"],
+      "performance": "light"
+    },
+    "blur": {
+      "name": "Blur Effects",
+      "description": "Backdrop blur and frosted glass effects",
+      "themes": ["CLEAN", "LUXE", "TECHNICAL"],
+      "performance": "heavy"
+    },
+    "noise": {
+      "name": "Noise Texture",
+      "description": "Subtle grain overlay for texture",
+      "themes": ["ALL"],
+      "performance": "light"
+    }
+  },
+  "metadata": {
+    "version": "1.0.0",
+    "lastUpdated": "2025-12-08",
+    "totalVariants": {
+      "hero": 5,
+      "bento": 4,
+      "stacking": 3,
+      "layouts": 5
+    },
+    "description": "Design system registry defining all component variants, layouts, and effects available for the autonomous landing page generator. Each variant is mapped to compatible themes and animation profiles."
+  }
+}

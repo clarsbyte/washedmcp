@@ -1,0 +1,5 @@
+export { HeroCentered } from "./hero-centered"
+export { HeroSplit } from "./hero-split"
+export { HeroBold } from "./hero-bold"
+export { HeroMinimal } from "./hero-minimal"
+export { HeroGlassmorphic } from "./hero-glassmorphic"

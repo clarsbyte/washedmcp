@@ -1,0 +1,391 @@
+{
+  "meta": {
+    "projectIdea": "Unified context management for AI coding teams",
+    "theme": "CLEAN",
+    "variation": "v1",
+    "generationId": "clean-001",
+    "timestamp": "2025-12-17T00:00:00Z"
+  },
+  "designSystem": {
+    "components": {
+      "hero": "hero-split",
+      "bento": "bento-3d",
+      "stacking": "stacking-scroll"
+    },
+    "layout": "feature_heavy",
+    "animations": "smooth",
+    "effects": {
+      "particles": false,
+      "glitch": false,
+      "mesh": false,
+      "glow": false,
+      "blur": false,
+      "noise": true
+    }
+  },
+  "brand": {
+    "name": "Clean",
+    "tagline": "Unified context for AI coding teams",
+    "logo": "Link2",
+    "colors": {
+      "primary": "oklch(0.145 0 0)",
+      "accent": "oklch(0.55 0.15 160)",
+      "background": "oklch(0.985 0.002 85)"
+    }
+  },
+  "metadata": {
+    "title": "Clean — One team, one context",
+    "description": "Clean is a shared context layer for AI coding agents. Capture MCP tool results once, store them in Neo4j, and serve optimized context to every teammate.",
+    "keywords": [
+      "MCP",
+      "AI coding agents",
+      "shared context",
+      "Neo4j",
+      "cosine similarity",
+      "agent memory",
+      "developer productivity",
+      "token optimization"
+    ]
+  },
+  "sections": {
+    "hero": {
+      "enabled": true,
+      "announcement": {
+        "text": "Private beta: shared context across Claude Code, Cursor, and more",
+        "icon": "Sparkles"
+      },
+      "headline": {
+        "prefix": "One team,",
+        "rotating": ["one context"],
+        "suffix": ""
+      },
+      "subheadline": "Clean sits between your AI agent and MCP servers to capture context, store it in a shared graph, and reuse only what’s relevant—so every agent stays consistent, cheap, and up to date.",
+      "cta": {
+        "primary": {
+          "text": "Get a demo",
+          "link": "#pricing"
+        },
+        "secondary": {
+          "text": "See how it works",
+          "link": "#how-it-works"
+        }
+      },
+      "socialProof": {
+        "avatars": 5,
+        "count": "100+",
+        "text": "teams shipping with shared context"
+      },
+      "image": {
+        "src": "/placeholder.jpg",
+        "alt": "Clean shared context graph"
+      },
+      "style": "split"
+    },
+    "logoCloud": {
+      "enabled": true,
+      "heading": "Fits into your existing agent workflow",
+      "logos": [
+        { "name": "Claude Code", "src": "", "alt": "Claude Code" },
+        { "name": "Cursor", "src": "", "alt": "Cursor" },
+        { "name": "Windsurf", "src": "", "alt": "Windsurf" },
+        { "name": "MCP", "src": "", "alt": "Model Context Protocol" },
+        { "name": "Neo4j", "src": "", "alt": "Neo4j" }
+      ]
+    },
+    "stats": {
+      "enabled": true,
+      "heading": "Stop re-fetching the same context",
+      "description": "Fetch once, use everywhere — with freshness and consistency built in.",
+      "stats": [
+        {
+          "value": 60,
+          "suffix": "%",
+          "label": "Fewer redundant context pulls",
+          "icon": "Zap",
+          "color": "from-emerald-500 to-teal-500"
+        },
+        {
+          "value": 10,
+          "suffix": "x",
+          "label": "Faster context retrieval",
+          "icon": "Search",
+          "color": "from-blue-500 to-cyan-500"
+        },
+        {
+          "value": 24,
+          "suffix": "h",
+          "label": "Trend cache TTL",
+          "icon": "RefreshCcw",
+          "color": "from-amber-500 to-orange-500"
+        },
+        {
+          "value": 1,
+          "suffix": "",
+          "label": "Shared source of truth",
+          "icon": "Users",
+          "color": "from-violet-500 to-purple-500"
+        }
+      ]
+    },
+    "bentoFeatures": {
+      "enabled": true,
+      "heading": "Everything your agents need to stay aligned",
+      "description": "Clean unifies tool context across the team so every agent ships consistent code with fewer tokens.",
+      "features": [
+        {
+          "title": "Shared Context Graph",
+          "description": "Store tool results in Neo4j so every agent learns from the same up-to-date context pool.",
+          "icon": "Database",
+          "size": "large"
+        },
+        {
+          "title": "Universal MCP Management",
+          "description": "Discover, install, and manage MCPs from a curated directory — without hand-editing configs.",
+          "icon": "Package",
+          "size": "medium"
+        },
+        {
+          "title": "Token Optimization",
+          "description": "Cosine similarity retrieves only what’s relevant to your prompt, cutting waste and noise.",
+          "icon": "Zap",
+          "size": "medium"
+        },
+        {
+          "title": "Visual Dashboard",
+          "description": "Understand what your agents know with an interactive node graph of MCPs and context.",
+          "icon": "GitBranch",
+          "size": "medium"
+        },
+        {
+          "title": "Freshness Alerts",
+          "description": "Get warned when docs drift or context goes stale before it breaks builds.",
+          "icon": "Bell",
+          "size": "small"
+        },
+        {
+          "title": "Agent Memory",
+          "description": "Track what changed, why it changed, and which context influenced the outcome.",
+          "icon": "BookOpen",
+          "size": "small"
+        }
+      ]
+    },
+    "stackingFeatures": {
+      "enabled": true,
+      "heading": "How Clean works",
+      "description": "A shared layer that intercepts context, stores it, and serves the right slice back to every agent.",
+      "features": [
+        {
+          "title": "Intercept tool calls",
+          "description": "Clean captures context fetched from any MCP so your agents don’t operate in isolation.",
+          "icon": "Scan",
+          "gradient": ""
+        },
+        {
+          "title": "Store once in Neo4j",
+          "description": "All context becomes a connected graph: prompts, sources, versions, and relationships.",
+          "icon": "Database",
+          "gradient": ""
+        },
+        {
+          "title": "Retrieve by similarity",
+          "description": "Cosine similarity selects only the most relevant context for each new prompt.",
+          "icon": "Search",
+          "gradient": ""
+        },
+        {
+          "title": "Keep it fresh",
+          "description": "Freshness alerts surface outdated context so your team can clean it up fast.",
+          "icon": "RefreshCcw",
+          "gradient": ""
+        }
+      ]
+    },
+    "testimonials": {
+      "enabled": true,
+      "heading": "Teams ship faster with shared context",
+      "description": "What it feels like when every agent stays aligned.",
+      "testimonials": [
+        {
+          "content": "We stopped fighting version mismatches across agents. Clean keeps our stack consistent by default.",
+          "highlight": "No more version drift",
+          "author": {
+            "name": "Sarah Chen",
+            "role": "Engineering Manager",
+            "company": "Fintech",
+            "avatar": "/professional-asian-woman-headshot.jpg"
+          },
+          "rating": 5
+        },
+        {
+          "content": "Clean cut our token spend immediately—no more re-fetching the same docs in every prompt.",
+          "highlight": "Lower token burn",
+          "author": {
+            "name": "Michael Rodriguez",
+            "role": "CTO",
+            "company": "ScaleUp Labs",
+            "avatar": "/professional-latino-man-headshot.png"
+          },
+          "rating": 5
+        },
+        {
+          "content": "The node graph dashboard is the first time we’ve been able to see what our agents actually know.",
+          "highlight": "See everything",
+          "author": {
+            "name": "Emily Thompson",
+            "role": "Staff Engineer",
+            "company": "Platform",
+            "avatar": "/professional-woman-executive-headshot.png"
+          },
+          "rating": 5
+        },
+        {
+          "content": "Freshness alerts saved us from shipping code based on outdated docs. It’s like linting for context.",
+          "highlight": "Always fresh",
+          "author": {
+            "name": "David Kim",
+            "role": "DevEx Lead",
+            "company": "Developer Tools",
+            "avatar": "/professional-korean-man-headshot.png"
+          },
+          "rating": 5
+        },
+        {
+          "content": "The MCP directory means onboarding new agents is minutes, not hours. Our whole team ships faster.",
+          "highlight": "Faster onboarding",
+          "author": {
+            "name": "Lisa Patel",
+            "role": "Lead Developer",
+            "company": "Studio",
+            "avatar": "/professional-indian-woman-developer-headshot.jpg"
+          },
+          "rating": 5
+        },
+        {
+          "content": "Shared context finally makes pair programming with agents feel like a team sport. No more isolated assistants.",
+          "highlight": "One team, one context",
+          "author": {
+            "name": "James Wilson",
+            "role": "Engineering Director",
+            "company": "DataFlow",
+            "avatar": "/professional-black-man-headshot.png"
+          },
+          "rating": 5
+        }
+      ]
+    },
+    "pricing": {
+      "enabled": true,
+      "heading": "Pricing that scales with your team",
+      "description": "Start simple, grow into enterprise controls.",
+      "billingToggle": true,
+      "annualDiscount": 20,
+      "tiers": [
+        {
+          "name": "Starter",
+          "price": 0,
+          "description": "For individuals testing shared context.",
+          "features": ["1 workspace", "Basic shared context store", "Community support"],
+          "cta": "Get Started",
+          "featured": false,
+          "gradient": "from-slate-500 to-slate-600"
+        },
+        {
+          "name": "Team",
+          "price": 49,
+          "description": "For teams building with AI agents daily.",
+          "features": [
+            "Unlimited agents",
+            "Shared context graph (Neo4j)",
+            "MCP directory + management",
+            "Similarity-based retrieval",
+            "Freshness alerts"
+          ],
+          "cta": "Book a Demo",
+          "featured": true,
+          "gradient": "from-accent to-accent/80"
+        },
+        {
+          "name": "Enterprise",
+          "price": null,
+          "description": "For security, compliance, and scale.",
+          "features": [
+            "SSO & SCIM",
+            "Audit logs",
+            "Private networking",
+            "Custom retention policies",
+            "Dedicated support"
+          ],
+          "cta": "Contact Sales",
+          "featured": false,
+          "gradient": "from-slate-500 to-slate-600"
+        }
+      ]
+    },
+    "cta": {
+      "enabled": true,
+      "badge": "Available in Private Beta",
+      "headline": "Ready for one team, one context?",
+      "description": "Stop burning tokens and time. Give every agent the same fresh, consistent context pool.",
+      "cta": {
+        "primary": { "text": "Get a demo", "link": "#pricing" },
+        "secondary": { "text": "Talk to us", "link": "#" }
+      },
+      "trustBadges": ["No credit card required", "Works with MCP", "Bring your agents"]
+    },
+    "footer": {
+      "enabled": true,
+      "tagline": "Shared context for AI coding teams.",
+      "columns": [
+        {
+          "title": "Product",
+          "links": [
+            { "text": "How it works", "href": "#how-it-works" },
+            { "text": "Features", "href": "#features" },
+            { "text": "Pricing", "href": "#pricing" }
+          ]
+        },
+        {
+          "title": "Company",
+          "links": [
+            { "text": "About", "href": "#" },
+            { "text": "Careers", "href": "#" },
+            { "text": "Contact", "href": "#" }
+          ]
+        },
+        {
+          "title": "Resources",
+          "links": [
+            { "text": "Documentation", "href": "#" },
+            { "text": "Status", "href": "#" },
+            { "text": "Changelog", "href": "#" }
+          ]
+        },
+        {
+          "title": "Legal",
+          "links": [
+            { "text": "Privacy", "href": "#" },
+            { "text": "Terms", "href": "#" },
+            { "text": "Security", "href": "#" }
+          ]
+        }
+      ],
+      "social": [
+        { "platform": "twitter", "url": "#" },
+        { "platform": "github", "url": "#" },
+        { "platform": "linkedin", "url": "#" }
+      ],
+      "copyright": "© 2025 Clean. All rights reserved."
+    }
+  },
+  "effects": {
+    "smoothScroll": true,
+    "customCursor": true,
+    "spotlight": true,
+    "noise": true,
+    "animations": {
+      "enabled": true,
+      "reducedMotion": false
+    }
+  }
+}

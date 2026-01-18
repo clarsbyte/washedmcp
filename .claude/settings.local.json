@@ -9,6 +9,10 @@
       "Bash(git remote remove:*)",
       "Bash(git rev-parse:*)",
       "Bash(npm run build:*)",
+      "Bash(tree:*)",
+      "Bash(find:*)",
+      "Bash(ls:*)",
+      "Bash(npm install)",
       "mcp__washedmcp__installMCPServer",
       "mcp__washedmcp__getMCPInstallationStatus",
       "mcp__washedmcp__listInstalledServers",
@@ -21,6 +25,7 @@
       "mcp__Github_MCP__search_repositories",
       "mcp__washedmcp__listAllMCPServers",
       "mcp__washedmcp__analyzeAndExecute"
+      
     ]
   },
   "enableAllProjectMcpServers": true,
