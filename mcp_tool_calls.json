@@ -319,5 +319,138 @@
     },
     "result": "{\"success\":true,\"alreadyInstalled\":true,\"server\":{\"qualifiedName\":\"@tavily-ai/tavily-mcp\",\"displayName\":\"Tavily MCP Server\",\"connectionType\":\"remote\",\"status\":\"connected\",\"installedAt\":\"2026-01-17T22:03:56.819Z\",\"config\":{\"command\":\"npx\",\"args\":[\"-y\",\"@tavily-ai/tavily-mcp\"],\"env\":{}}}}",
     "timestamp": "2026-01-17T22:08:51.889982"
+  },
+  {
+    "tool_name": "mcp__washedmcp__analyzeAndExecute",
+    "server_name": "washedmcp",
+    "call_id": "toolu_01Ke6pEJwwjVewsevotSZfgT",
+    "parameters": {
+      "task": "Take a screenshot of google.com"
+    },
+    "result": "{\"success\":true,\"task\":\"Take a screenshot of google.com\",\"detected_capabilities\":[\"browser-automation\"],\"detection_method\":\"gemini\",\"confidence\":0.95,\"server_used\":\"@microsoft/playwright-mcp\",\"connection_type\":\"local\",\"newly_installed\":true,\"steps\":[\"1. Analyzing task for required capabilities...\",\"   Detected: browser-automation (gemini, confidence: 95%)\",\"2. Searching Smithery registry...\",\"   Found: Playwright Automation (@microsoft/playwright-mcp)\",\"3. Installing Playwright Automation (local)...\",\"   Configuration written to .mcp.json\",\"   Server registered: @microsoft/playwright-mcp\",\"4. Server @microsoft/playwright-mcp is ready for use\",\"   NOTE: Restart Claude Code to load the new local server\"],\"next_action\":\"Restart Claude Code to load the server, then use its tools\"}",
+    "timestamp": "2026-01-18T01:36:10.562352"
+  },
+  {
+    "tool_name": "mcp__washedmcp__installFromSmithery",
+    "server_name": "washedmcp",
+    "call_id": "toolu_01XgM2XH7tAKViTmSAWHtHri",
+    "parameters": {
+      "serverName": "@anthropics/claude-mcp-playwright",
+      "connectionType": "remote"
+    },
+    "result": "{\"success\":true,\"server\":{\"qualifiedName\":\"@microsoft/playwright-mcp\",\"displayName\":\"Playwright Automation\",\"connectionType\":\"remote\",\"status\":\"connected\",\"installedAt\":\"2026-01-18T01:36:20.841Z\",\"config\":{\"command\":\"npx\",\"args\":[\"-y\",\"@microsoft/playwright-mcp\"],\"env\":{}}},\"installCommand\":\"npx -y @microsoft/playwright-mcp\",\"needsRestart\":false,\"config_written\":true,\"steps\":[\"Installing Playwright Automation (remote)...\",\"   Configuring: npx -y @microsoft/playwright-mcp\",\"   Configuration written to .mcp.json\"],\"next_steps\":[\"Configuration written to .mcp.json\",\"Restart Claude Code to load the new MCP server\",\"The Playwright Automation tools will then be available\"]}",
+    "timestamp": "2026-01-18T01:36:21.101834"
+  },
+  {
+    "tool_name": "mcp__washedmcp__installFromSmithery",
+    "server_name": "washedmcp",
+    "call_id": "toolu_01W7WMTPisfo6bAyfTu2LitV",
+    "parameters": {
+      "serverName": "@anthropics/claude-mcp-playwright",
+      "connectionType": "local"
+    },
+    "result": "{\"success\":true,\"server\":{\"qualifiedName\":\"@microsoft/playwright-mcp\",\"displayName\":\"Playwright Automation\",\"connectionType\":\"local\",\"status\":\"connected\",\"installedAt\":\"2026-01-18T02:11:49.276Z\",\"config\":{\"command\":\"npx\",\"args\":[\"-y\",\"@microsoft/playwright-mcp\"],\"env\":{}}},\"installCommand\":\"npx -y @microsoft/playwright-mcp\",\"needsRestart\":true,\"config_written\":true,\"steps\":[\"Installing Playwright Automation (local)...\",\"   Configuring: npx -y @microsoft/playwright-mcp\",\"   Configuration written to .mcp.json\"],\"next_steps\":[\"Configuration written to .mcp.json\",\"Restart Claude Code to load the new MCP server\",\"The Playwright Automation tools will then be available\"]}",
+    "timestamp": "2026-01-18T02:11:49.636251"
+  },
+  {
+    "tool_name": "mcp__washedmcp__searchSmithery",
+    "server_name": "washedmcp",
+    "call_id": "toolu_01FXyvMDYz9eG4onsvcW8WH8",
+    "parameters": {
+      "query": "github",
+      "limit": 5
+    },
+    "result": "{\"query\":\"github\",\"totalFound\":5,\"servers\":[{\"name\":\"github\",\"displayName\":\"GitHub\",\"description\":\"GitHub is a code hosting platform for version control and collaboration, offering Git-based repository management, issue tracking, and continuous integration features\",\"isRemote\":false,\"isVerified\":false,\"useCount\":5927,\"homepage\":\"https://smithery.ai/server/github\"},{\"name\":\"@ref-tools/ref-tools-mcp\",\"displayName\":\"Ref\",\"description\":\"Provide your AI coding tools with token-efficient access to up-to-date technical documentation for APIs, services, libraries, and more. Enable powerful search and reading capabilities to help your age\",\"isRemote\":false,\"isVerified\":false,\"useCount\":1715,\"homepage\":\"https://smithery.ai/server/@ref-tools/ref-tools-mcp\"},{\"name\":\"deepwiki\",\"displayName\":\"DeepWiki\",\"description\":\"Explore GitHub repository documentation by topic to quickly understand any project. Open pages on demand and ask questions to get concise answers. Find what you need faster across complex wikis.\",\"isRemote\":false,\"isVerified\":false,\"useCount\":728,\"homepage\":\"https://smithery.ai/server/deepwiki\"},{\"name\":\"@smithery-ai/github\",\"displayName\":\"Github\",\"description\":\"Access the GitHub API, enabling file operations, repository management, search functionality, and more.\",\"isRemote\":false,\"isVerified\":false,\"useCount\":8857,\"homepage\":\"https://smithery.ai/server/@smithery-ai/github\"},{\"name\":\"bitbucket\",\"displayName\":\"Bitbucket\",\"description\":\"Bitbucket is a Git-based code hosting and collaboration platform supporting private and public repositories, enabling teams to manage and review code through pull requests and integrations\",\"isRemote\":false,\"isVerified\":false,\"useCount\":643,\"homepage\":\"https://smithery.ai/server/bitbucket\"}]}",
+    "timestamp": "2026-01-18T02:18:44.586396"
+  },
+  {
+    "tool_name": "mcp__washedmcp__installFromSmithery",
+    "server_name": "washedmcp",
+    "call_id": "toolu_01K7vnfhKJXWTx1ivW7mgv4f",
+    "parameters": {
+      "serverName": "@smithery-ai/github"
+    },
+    "result": "{\"success\":false,\"requires_credentials\":true,\"server_name\":\"@smithery-ai/github\",\"display_name\":\"Github\",\"missing_vars\":[{\"name\":\"githubPersonalAccessToken\",\"description\":\"GitHub personal access token for authentication. Create one at: https://github.com/settings/personal-access-tokens\",\"instructions\":\"Please provide your githubPersonalAccessToken\"}],\"example_call\":\"installFromSmithery({ serverName: \\\"@smithery-ai/github\\\", envVars: { \\\"githubPersonalAccessToken\\\": \\\"your_value\\\" } })\",\"message\":\"The Github requires credentials to install. Please provide the following environment variables.\"}",
+    "timestamp": "2026-01-18T02:18:49.906261"
+  },
+  {
+    "tool_name": "mcp__washedmcp__installFromSmithery",
+    "server_name": "washedmcp",
+    "call_id": "toolu_01AsFDwxyYRyzaMx3uQH2s9J",
+    "parameters": {
+      "serverName": "@smithery-ai/github",
+      "envVars": {
+        "githubPersonalAccessToken": "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"
+      }
+    },
+    "result": "{\"success\":true,\"server\":{\"qualifiedName\":\"@smithery-ai/github\",\"displayName\":\"Github\",\"connectionType\":\"local\",\"status\":\"connected\",\"installedAt\":\"2026-01-18T02:19:39.348Z\",\"config\":{\"command\":\"npx\",\"args\":[\"-y\",\"@smithery-ai/github\"],\"env\":{\"githubPersonalAccessToken\":\"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\"}}},\"installCommand\":\"npx -y @smithery-ai/github\",\"needsRestart\":true,\"config_written\":true,\"steps\":[\"Installing Github (local)...\",\"   With environment variables: githubPersonalAccessToken\",\"   Configuring: npx -y @smithery-ai/github\",\"   Configuration written to .mcp.json\"],\"next_steps\":[\"Configuration written to .mcp.json\",\"Restart Claude Code to load the new MCP server\",\"The Github tools will then be available\"]}",
+    "timestamp": "2026-01-18T02:19:39.671663"
+  },
+  {
+    "tool_name": "mcp__washedmcp__installFromSmithery",
+    "server_name": "washedmcp",
+    "call_id": "toolu_01MX8b9mEqai7Vo8RGf13bTp",
+    "parameters": {
+      "serverName": "@microsoft/playwright-mcp"
+    },
+    "result": "{\"success\":true,\"alreadyInstalled\":true,\"server\":{\"qualifiedName\":\"@microsoft/playwright-mcp\",\"displayName\":\"Playwright Automation\",\"connectionType\":\"local\",\"status\":\"connected\",\"installedAt\":\"2026-01-18T02:11:49.276Z\",\"config\":{\"command\":\"npx\",\"args\":[\"-y\",\"@microsoft/playwright-mcp\"],\"env\":{}}}}",
+    "timestamp": "2026-01-18T02:32:58.213887"
+  },
+  {
+    "tool_name": "mcp__washedmcp__searchSmithery",
+    "server_name": "washedmcp",
+    "call_id": "toolu_01RkNMX16pNdU5kyxmA34kca",
+    "parameters": {
+      "query": "trello",
+      "limit": "5"
+    },
+    "result": "{\"query\":\"trello\",\"totalFound\":5,\"servers\":[{\"name\":\"trello\",\"displayName\":\"Trello\",\"description\":\"A web-based, kanban-style, list-making application.\",\"isRemote\":false,\"isVerified\":false,\"useCount\":3519,\"homepage\":\"https://smithery.ai/server/trello\"},{\"name\":\"@Hint-Services/mcp-trello\",\"displayName\":\"Trello\",\"description\":\"Covers main interactions with Trello boards. Managing and moving cards, list interactions, and board activities.\",\"isRemote\":false,\"isVerified\":false,\"useCount\":54,\"homepage\":\"https://smithery.ai/server/@Hint-Services/mcp-trello\"},{\"name\":\"@gul-tekinmuhendislik/gul-tekin-muhedislik-mcp\",\"displayName\":\"G\u00c3\u00bcl-tekin M\u00c3\u00bchendislik\",\"description\":\"\u00c3\u0153r\u00c3\u00bcnler, projeler, blog yaz\u00c4\u00b1lar\u00c4\u00b1, markalar, hizmetler ve kategoriler i\u00c3\u00a7in okuma, yazma, g\u00c3\u00bcncelleme ve silme i\u00c5\u0178lemleri. Geli\u00c5\u0178mi\u00c5\u0178 filtreleme ve SEO deste\u00c4\u0178i ile m\u00c3\u00bchendislik i\u00c5\u0178 ak\u00c4\u00b1\u00c5\u0178lar\u00c4\u00b1n\u00c4\u00b1 otomatikle\u00c5\u0178tirin\",\"isRemote\":false,\"isVerified\":false,\"useCount\":1178,\"homepage\":\"https://smithery.ai/server/@gul-tekinmuhendislik/gul-tekin-muhedislik-mcp\"},{\"name\":\"@lochmueller/muell-io\",\"displayName\":\"muell-io\",\"description\":\"\",\"isRemote\":false,\"isVerified\":false,\"useCount\":53,\"homepage\":\"https://smithery.ai/server/@lochmueller/muell-io\"},{\"name\":\"@aahl/mcp-aktools\",\"displayName\":\"AkTools MCP Server for stock and crypto\",\"description\":\"MCP Server for stock and crypto.\\n\\n\u00e6\udc8f\udc90\u00e4\u00be\u203a\u00e8\u201a\u00a1\u00e7\u00a5\u00a8\u00e3\u20ac\udc81\u00e5\u0160\u00a0\u00e5\u00af\u2020\u00e8\u00b4\u00a7\u00e5\u00b8\udc81\u00e7\u0161\u201e\u00e6\u2022\u00b0\u00e6\udc8d\u00ae\u00e6\u0178\u00a5\u00e8\u00af\u00a2\u00e5\u2019\u0152\u00e5\u02c6\u2020\u00e6\u017e\udc90\u00e5\u0160\u0178\u00e8\u0192\u00bdMCP\u00e6\u0153\udc8d\u00e5\u0160\u00a1\u00e5\u2122\u00a8\\n\\n\\n## \u00e5\u0160\u0178\u00e8\u0192\u00bd\\n- **\u00e8\u201a\u00a1\u00e7\u00a5\u00a8\u00e6\udc90\u0153\u00e7\u00b4\u00a2**: \u00e6\u00a0\u00b9\u00e6\udc8d\u00ae\u00e5\u2026\u00ac\u00e5\udc8f\u00b8\u00e5\udc90\udc8d\u00e7\u00a7\u00b0\u00e3\u20ac\udc81\u00e8\u201a\u00a1\u00e7\u00a5\u00a8\u00e5\udc90\udc8d\u00e7\u00a7\u00b0\u00e7\u00ad\u2030\u00e5\u2026\u00b3\u00e9\u201d\u00ae\u00e8\u00af\udc8d\u00e6\u0178\u00a5\u00e6\u2030\u00be\u00e8\u201a\u00a1\u00e7\u00a5\u00a8\u00e4\u00bb\u00a3\u00e7\u00a0\udc81\\n- **\u00e8\u201a\u00a1\u00e7\u00a5\u00a8\u00e4\u00bf\u00a1\u00e6\udc81\u00af**: \u00e8\u017d\u00b7\u00e5\udc8f\u2013\u00e8\u201a\u00a1\u00e7\u00a5\u00a8\u00e7\u0161\u201e\u00e8\u00af\u00a6\u00e7\u00bb\u2020\u00e4\u00bf\u00a1\u00e6\udc81\u00af\u00ef\u00bc\u0152\u00e5\u0152\u2026\u00e6\u2039\u00ac\u00e4\u00bb\u00b7\u00e6\u00a0\u00bc\u00e3\u20ac\udc81\u00e5\u00b8\u201a\u00e5\u20ac\u00bc\u00e7\u00ad\u2030\\n- **\u00e5\u017d\u2020\u00e5\udc8f\u00b2\u00e4\u00bb\u00b7\u00e6\u00a0\u00bc**: \u00e8\u017d\u00b7\u00e5\udc8f\u2013\u00e8\u201a\u00a1\u00e7\u00a5\u00a8\u00e3\u20ac\udc81\u00e5\u0160\u00a0\u00e5\u00af\u2020\u00e8\u00b4\u00a7\u00e5\u00b8\udc81\u00e5\u017d\u2020\u00e5\udc8f\u00b2\u00e4\u00bb\u00b7\u00e6\u00a0\u00bc\u00e6\u2022\u00b0\u00e6\udc8d\u00ae\u00ef\u00bc\u0152\u00e5\u0152\u2026\u00e5\udc90\u00ab\u00e6\u0160\u20ac\u00e6\u0153\u00af\u00e5\u02c6\u2020\u00e6\u017e\udc90\u00e6\u0152\u2021\u00e6\u00a0\u2021\\n- **\u00e7\u203a\u00b8\u00e5\u2026\u00b3\u00e6\u2013\u00b0\u00e9\u2014\u00bb**: \u00e8\u017d\u00b7\u00e5\udc8f\u2013\u00e8\u201a\u00a1\u00e7\u00a5\u00a8\u00e3\u20ac\udc81\u00e5\u0160\u00a0\u00e5\u00af\u2020\u00e8\u00b4\u00a7\u00e5\u00b8\udc81\u00e7\u203a\u00b8\u00e5\u2026\u00b3\u00e7\u0161\u201e\u00e6\u0153\u20ac\u00e6\u2013\u00b0\u00e6\u2013\u00b0\u00e9\u2014\u00bb\u00e8\u00b5\u201e\u00e8\u00ae\u00af\",\"isRemote\":false,\"isVerified\":false,\"useCount\":1805,\"homepage\":\"https://smithery.ai/server/@aahl/mcp-aktools\"}]}",
+    "timestamp": "2026-01-18T02:50:41.487554"
+  },
+  {
+    "tool_name": "mcp__washedmcp__installFromSmithery",
+    "server_name": "washedmcp",
+    "call_id": "toolu_019C2nNiJU7WKkRLQwE3yZEB",
+    "parameters": {
+      "serverName": "trello"
+    },
+    "result": "{\"success\":true,\"server\":{\"qualifiedName\":\"trello\",\"displayName\":\"Trello\",\"connectionType\":\"local\",\"status\":\"connected\",\"installedAt\":\"2026-01-18T02:50:46.969Z\",\"config\":{\"command\":\"npx\",\"args\":[\"-y\",\"trello\"],\"env\":{}}},\"installCommand\":\"npx -y trello\",\"needsRestart\":true,\"config_written\":true,\"steps\":[\"Installing Trello (local)...\",\"   Configuring: npx -y trello\",\"   Configuration written to .mcp.json\"],\"next_steps\":[\"Configuration written to .mcp.json\",\"Restart Claude Code to load the new MCP server\",\"The Trello tools will then be available\"]}",
+    "timestamp": "2026-01-18T02:50:48.221343"
+  },
+  {
+    "tool_name": "mcp__washedmcp__searchSmithery",
+    "server_name": "washedmcp",
+    "call_id": "toolu_01Cq7gnrDizU6aD2ToimA6Ef",
+    "parameters": {
+      "query": "context7"
+    },
+    "result": "{\"query\":\"context7\",\"totalFound\":5,\"servers\":[{\"name\":\"@upstash/context7-mcp\",\"displayName\":\"Context7\",\"description\":\"Fetch up-to-date, version-specific documentation and code examples directly into your prompts. Enhance your coding experience by eliminating outdated information and hallucinated APIs. Simply add `use\",\"isRemote\":false,\"isVerified\":false,\"useCount\":16364,\"homepage\":\"https://smithery.ai/server/@upstash/context7-mcp\"},{\"name\":\"@ref-tools/ref-tools-mcp\",\"displayName\":\"Ref\",\"description\":\"Provide your AI coding tools with token-efficient access to up-to-date technical documentation for APIs, services, libraries, and more. Enable powerful search and reading capabilities to help your age\",\"isRemote\":false,\"isVerified\":false,\"useCount\":1715,\"homepage\":\"https://smithery.ai/server/@ref-tools/ref-tools-mcp\"},{\"name\":\"@geobio/context7\",\"displayName\":\"Context7\",\"description\":\"Provide up-to-date, version-specific code documentation and examples directly into your prompts to enhance coding accuracy and reduce hallucinated APIs. Seamlessly integrate with various MCP clients t\",\"isRemote\":false,\"isVerified\":false,\"useCount\":2282,\"homepage\":\"https://smithery.ai/server/@geobio/context7\"},{\"name\":\"@2511319/context7\",\"displayName\":\"Context7\",\"description\":\"Provide up-to-date, version-specific code documentation and examples directly within your prompts to improve coding accuracy and reduce hallucinated APIs. Seamlessly integrate with your preferred MCP \",\"isRemote\":false,\"isVerified\":false,\"useCount\":801,\"homepage\":\"https://smithery.ai/server/@2511319/context7\"},{\"name\":\"@renCosta2025/context7fork\",\"displayName\":\"Context7\",\"description\":\"Get up-to-date, version-specific documentation and code examples from official sources directly in your prompts. Eliminate hallucinated APIs and outdated answers by pulling precise docs for the librar\",\"isRemote\":false,\"isVerified\":false,\"useCount\":162,\"homepage\":\"https://smithery.ai/server/@renCosta2025/context7fork\"}]}",
+    "timestamp": "2026-01-18T02:54:05.235477"
+  },
+  {
+    "tool_name": "mcp__washedmcp__installFromSmithery",
+    "server_name": "washedmcp",
+    "call_id": "toolu_017uwL59XAn6RrbA6RfZ81Pw",
+    "parameters": {
+      "serverName": "@upstash/context7-mcp"
+    },
+    "result": "{\"success\":true,\"server\":{\"qualifiedName\":\"@upstash/context7-mcp\",\"displayName\":\"Context7\",\"connectionType\":\"local\",\"status\":\"connected\",\"installedAt\":\"2026-01-18T02:54:10.581Z\",\"config\":{\"command\":\"npx\",\"args\":[\"-y\",\"@upstash/context7-mcp\"],\"env\":{}}},\"installCommand\":\"npx -y @upstash/context7-mcp\",\"needsRestart\":true,\"config_written\":true,\"steps\":[\"Installing Context7 (local)...\",\"   Configuring: npx -y @upstash/context7-mcp\",\"   Configuration written to .mcp.json\"],\"next_steps\":[\"Configuration written to .mcp.json\",\"Restart Claude Code to load the new MCP server\",\"The Context7 tools will then be available\"]}",
+    "timestamp": "2026-01-18T02:54:11.848870"
+  },
+  {
+    "tool_name": "mcp___upstash_context7-mcp__resolve-library-id",
+    "server_name": "Unknown",
+    "call_id": "toolu_017DkpM1SCYy7xnSw23FHRzJ",
+    "parameters": {
+      "query": "LeanMCP documentation",
+      "libraryName": "leanmcp"
+    },
+    "result": [
+      {
+        "type": "text",
+        "text": "Available Libraries:\n\nEach result includes:\n- Library ID: Context7-compatible identifier (format: /org/project)\n- Name: Library or package name\n- Description: Short summary\n- Code Snippets: Number of available code examples\n- Source Reputation: Authority indicator (High, Medium, Low, or Unknown)\n- Benchmark Score: Quality indicator (100 is the highest score)\n- Versions: List of versions if available. Use one of those versions if the user provides a version in their query. The format of the version is /org/project/version.\n\nFor best results, select libraries based on name match, source reputation, snippet coverage, benchmark score, and relevance to your use case.\n\n----------\n\n- Title: LeanMCP\n- Context7-compatible library ID: /websites/leanmcp\n- Description: LeanMCP is a platform designed to quickly build, test, and deploy MCP Servers, which serve as a standard protocol and user interface for AI agents to understand and interact with SaaS applications.\n- Code Snippets: 163\n- Source Reputation: High\n- Benchmark Score: 46.8\n----------\n- Title: FastMCP\n- Context7-compatible library ID: /jlowin/fastmcp\n- Description: FastMCP is a Python framework for building Model Context Protocol (MCP) servers and clients, simplifying the creation of LLM-integrated applications with features like deployment, authentication, and dynamic tool generation.\n- Code Snippets: 1749\n- Source Reputation: High\n- Benchmark Score: 78\n----------\n- Title: FastMCP\n- Context7-compatible library ID: /llmstxt/gofastmcp_llms_txt\n- Description: FastMCP is a fast, Pythonic framework for building and deploying Multi-modal Conversational Platform (MCP) servers and clients, offering programmatic interfaces and extensive integrations for LLMs and various services.\n- Code Snippets: 3197\n- Source Reputation: High\n- Benchmark Score: 76.8\n----------\n- Title: FastMCP\n- Context7-compatible library ID: /llmstxt/gofastmcp_llms-full_txt\n- Description: FastMCP is a Python framework for building MCP servers, featuring an experimental OpenAPI parser, JWT claims, and optimized payload handling.\n- Code Snippets: 12289\n- Source Reputation: High\n- Benchmark Score: 79\n----------\n- Title: FastMCP\n- Context7-compatible library ID: /websites/gofastmcp\n- Description: FastMCP is a Python framework for building and managing Model Context Protocol (MCP) servers and clients, simplifying the connection of LLMs to data and functionality.\n- Code Snippets: 1879\n- Source Reputation: High\n- Benchmark Score: 79.6"
+      }
+    ],
+    "timestamp": "2026-01-18T02:54:52.438992"
   }
 ]

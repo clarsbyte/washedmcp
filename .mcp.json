@@ -1,46 +1,46 @@
 {
   "mcpServers": {
-    "Playwright MCP": {
+    "@playwright/mcp": {
       "type": "stdio",
       "command": "npx",
       "args": [
         "-y",
-        "@executeautomation/playwright-mcp-server"
+        "@playwright/mcp@latest"
       ],
       "env": {}
     },
-    "Github MCP": {
+    "washedmcp": {
+      "type": "sse",
+      "url": "http://localhost:3001/mcp"
+    },
+    "@teolin/mcp-github": {
       "type": "stdio",
       "command": "npx",
       "args": [
         "-y",
-        "@modelcontextprotocol/server-github"
+        "@teolin/mcp-github"
       ],
       "env": {
-        "GITHUB_PERSONAL_ACCESS_TOKEN": "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"
+        "GITHUB_TOKEN": "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"
       }
     },
-    "Todoist": {
+    "trello": {
       "type": "stdio",
       "command": "npx",
       "args": [
         "-y",
-        "@geralt1983/mcp-todoist"
+        "trello"
       ],
-      "env": {
-        "TODOIST_API_TOKEN": "aeef0fef31e0e62510441f264a41f8170c5c30ab"
-      }
+      "env": {}
     },
-    "Tavily": {
+    "@upstash/context7-mcp": {
       "type": "stdio",
       "command": "npx",
       "args": [
         "-y",
-        "@tavily-ai/tavily-mcp"
+        "@upstash/context7-mcp"
       ],
-      "env": {
-        "TAVILY_API_KEY": "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"
-      }
+      "env": {}
     }
   }
 }

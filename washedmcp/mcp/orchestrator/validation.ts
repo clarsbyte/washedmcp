@@ -3,6 +3,43 @@
  * Validates API token formats for common services
  */
 
+import { exec } from "child_process";
+import { promisify } from "util";
+
+const execAsync = promisify(exec);
+
+export interface NpmValidationResult {
+  exists: boolean;
+  error?: string;
+  suggestion?: string;
+}
+
+/**
+ * Validate that an npm package exists in the registry
+ * This prevents installing MCP servers with non-existent packages
+ */
+export async function validateNpmPackage(packageName: string): Promise<NpmValidationResult> {
+  try {
+    await execAsync(`npm view ${packageName} name`, { timeout: 10000 });
+    return { exists: true };
+  } catch (error: any) {
+    // Check for 404 Not Found
+    if (error.stderr?.includes("404") || error.message?.includes("404") ||
+        error.stderr?.includes("E404") || error.message?.includes("E404")) {
+      // Extract the base package name for suggestion
+      const baseName = packageName.split("/").pop() || packageName;
+      return {
+        exists: false,
+        error: `Package "${packageName}" not found in npm registry`,
+        suggestion: `Try searching npm with: npm search mcp ${baseName}`
+      };
+    }
+    // Network or other error - allow installation with warning (graceful degradation)
+    console.warn(`[Validation] Could not verify package ${packageName}: ${error.message}`);
+    return { exists: true }; // Don't block on network errors
+  }
+}
+
 export interface ValidationResult {
   isValid: boolean;
   errors: ValidationError[];

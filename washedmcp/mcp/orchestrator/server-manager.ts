@@ -7,6 +7,7 @@ import * as fs from "fs";
 import * as path from "path";
 import * as os from "os";
 import { SmitheryServer } from "./smithery.js";
+import { validateNpmPackage } from "./validation.js";
 
 /**
  * Configuration location options
@@ -51,7 +52,9 @@ export interface InstalledServer {
 
 // In-memory store for installed servers (also persisted to JSON)
 const installedServers = new Map<string, InstalledServer>();
-const SERVERS_FILE = path.join(process.cwd(), "installed_servers.json");
+// Project root is one level up from washedmcp/
+const PROJECT_ROOT = path.resolve(process.cwd(), "..");
+const SERVERS_FILE = path.join(PROJECT_ROOT, "installed_servers.json");
 
 /**
  * Load installed servers from disk
@@ -207,9 +210,12 @@ export function getClaudeConfigPath(): string {
 
 /**
  * Get the path to local .mcp.json config file
+ * This returns the project root's .mcp.json, not the washedmcp subdirectory
  */
 export function getLocalConfigPath(): string {
-  return path.join(process.cwd(), ".mcp.json");
+  // Go up one level from washedmcp/ to the project root
+  const projectRoot = path.resolve(process.cwd(), "..");
+  return path.join(projectRoot, ".mcp.json");
 }
 
 /**
@@ -297,12 +303,30 @@ function writeLocalConfig(
 /**
  * Update MCP config file with server configuration
  * Supports local (.mcp.json), global (~/.claude.json), or both
+ *
+ * Validates npm packages before writing to prevent broken configurations
  */
-export function updateMcpConfig(
+export async function updateMcpConfig(
   serverName: string,
   config: ServerConfig,
   location: ConfigLocation = "local"
-): boolean {
+): Promise<{ success: boolean; error?: string }> {
+  // Validate npm package exists before writing config
+  if (config.command === "npx" && config.args && config.args.includes("-y")) {
+    const yIndex = config.args.indexOf("-y");
+    if (yIndex >= 0 && yIndex + 1 < config.args.length) {
+      const packageName = config.args[yIndex + 1];
+      const validation = await validateNpmPackage(packageName);
+      if (!validation.exists) {
+        console.error(`[ServerManager] Package validation failed: ${validation.error}`);
+        return {
+          success: false,
+          error: `${validation.error}${validation.suggestion ? `\n${validation.suggestion}` : ""}`
+        };
+      }
+    }
+  }
+
   let localSuccess = true;
   let globalSuccess = true;
 
@@ -314,7 +338,7 @@ export function updateMcpConfig(
     globalSuccess = writeClaudeConfig(serverName, config);
   }
 
-  return localSuccess && globalSuccess;
+  return { success: localSuccess && globalSuccess };
 }
 
 /**

@@ -22,6 +22,7 @@ export interface SmitheryServer {
     type: "stdio" | "sse" | "streamable-http";
     url?: string;
     configSchema?: any;
+    stdioFunction?: string;  // Contains actual npm package (e.g., "config => ({command: 'npx', args: ['-y', '@playwright/mcp@latest'] })")
   }[];
 }
 
@@ -198,21 +199,36 @@ export function selectBestServer(servers: SmitheryServer[]): SmitheryServer | nu
 }
 
 /**
+ * Extract npm package name from Smithery's stdioFunction
+ * Example input: "config => ({command: 'npx', args: ['-y', '@playwright/mcp@latest'] })"
+ * Returns: "@playwright/mcp@latest" or null if not found
+ */
+export function extractNpmPackage(server: SmitheryServer): string | null {
+  for (const connection of server.connections || []) {
+    if (connection.type === "stdio" && connection.stdioFunction) {
+      // Parse the stdioFunction to extract package name
+      // Match args: ['-y', 'package-name'] or args: ["-y", "package-name"]
+      const match = connection.stdioFunction.match(/args:\s*\[\s*['"]?-y['"]?,\s*['"]([^'"]+)['"]/);
+      if (match && match[1]) {
+        return match[1];
+      }
+    }
+  }
+  return null;
+}
+
+/**
  * Get npm install command for a server
  */
 export function getInstallCommand(server: SmitheryServer): string {
-  const name = server.qualifiedName;
-
-  // Check for stdio connection with configSchema
-  const stdioConnection = server.connections?.find(c => c.type === "stdio");
-
-  if (stdioConnection) {
-    // Use npx for most MCP servers
-    return `npx -y ${name}`;
+  // First try to extract from stdioFunction
+  const npmPackage = extractNpmPackage(server);
+  if (npmPackage) {
+    return `npx -y ${npmPackage}`;
   }
 
-  // For servers without stdio, use the qualified name
-  return `npx -y ${name}`;
+  // Fallback to qualifiedName
+  return `npx -y ${server.qualifiedName}`;
 }
 
 /**

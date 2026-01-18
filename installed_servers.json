@@ -1,0 +1,67 @@
+{
+  "updatedAt": "2026-01-18T02:54:10.581Z",
+  "servers": [
+    {
+      "qualifiedName": "@microsoft/playwright-mcp",
+      "displayName": "Playwright Automation",
+      "connectionType": "local",
+      "status": "connected",
+      "installedAt": "2026-01-18T02:11:49.276Z",
+      "config": {
+        "command": "npx",
+        "args": [
+          "-y",
+          "@microsoft/playwright-mcp"
+        ],
+        "env": {}
+      }
+    },
+    {
+      "qualifiedName": "@smithery-ai/github",
+      "displayName": "Github",
+      "connectionType": "local",
+      "status": "connected",
+      "installedAt": "2026-01-18T02:19:39.348Z",
+      "config": {
+        "command": "npx",
+        "args": [
+          "-y",
+          "@smithery-ai/github"
+        ],
+        "env": {
+          "githubPersonalAccessToken": "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"
+        }
+      }
+    },
+    {
+      "qualifiedName": "trello",
+      "displayName": "Trello",
+      "connectionType": "local",
+      "status": "connected",
+      "installedAt": "2026-01-18T02:50:46.969Z",
+      "config": {
+        "command": "npx",
+        "args": [
+          "-y",
+          "trello"
+        ],
+        "env": {}
+      }
+    },
+    {
+      "qualifiedName": "@upstash/context7-mcp",
+      "displayName": "Context7",
+      "connectionType": "local",
+      "status": "connected",
+      "installedAt": "2026-01-18T02:54:10.581Z",
+      "config": {
+        "command": "npx",
+        "args": [
+          "-y",
+          "@upstash/context7-mcp"
+        ],
+        "env": {}
+      }
+    }
+  ]
+}

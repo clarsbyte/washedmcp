@@ -23,6 +23,7 @@ import {
   extractRequiredEnvVars,
   getCredentialInstructions,
   getAllRequiredEnvVars,
+  extractNpmPackage,
   SmitheryServer,
   SmitherySearchResult,
   RequiredEnvVar
@@ -282,7 +283,9 @@ Examples:
       try {
         // Get the connection command from server details
         let command = "npx";
-        let args = ["-y", bestServer.qualifiedName];
+        // Use extracted npm package from stdioFunction, fallback to qualifiedName
+        const npmPackage = extractNpmPackage(bestServer) || bestServer.qualifiedName;
+        let args = ["-y", npmPackage];
 
         // Check if server has stdio connection details
         const stdioConnection = bestServer.connections?.find(c => c.type === "stdio");
@@ -298,16 +301,30 @@ Examples:
         });
 
         // Write config directly to .mcp.json (no interactive CLI)
-        const configWritten = updateMcpConfig(bestServer.qualifiedName, {
+        const configResult = await updateMcpConfig(bestServer.qualifiedName, {
           command,
           args
         });
 
-        if (configWritten) {
-          steps.push("   Configuration written to .mcp.json");
-        } else {
-          steps.push("   Warning: Could not write to .mcp.json");
+        if (!configResult.success) {
+          steps.push(`   Configuration failed: ${configResult.error}`);
+          const result = {
+            success: false,
+            task: input.task,
+            detected_capabilities: detection.capabilities,
+            steps,
+            error: configResult.error || "Failed to write configuration"
+          };
+          logToolCall("analyzeAndExecute", input, result);
+          return {
+            content: [{
+              type: "text" as const,
+              text: JSON.stringify(result, null, 2)
+            }]
+          };
         }
+
+        steps.push("   Configuration written to .mcp.json");
 
         serverToUse = {
           name: bestServer.qualifiedName,
@@ -563,7 +580,9 @@ Examples:
     try {
       // Skip Smithery CLI - write config directly (non-interactive)
       const command = "npx";
-      const args = ["-y", server.qualifiedName];
+      // Use extracted npm package from stdioFunction, fallback to qualifiedName
+      const npmPackage = extractNpmPackage(server) || server.qualifiedName;
+      const args = ["-y", npmPackage];
 
       if (Object.keys(providedEnvVars).length > 0) {
         steps.push(`   With environment variables: ${Object.keys(providedEnvVars).join(", ")}`);
@@ -585,24 +604,38 @@ Examples:
       });
 
       // Write config directly to .mcp.json (no Smithery CLI needed)
-      const configWritten = updateMcpConfig(server.qualifiedName, {
+      const configResult = await updateMcpConfig(server.qualifiedName, {
         command,
         args,
         env: providedEnvVars
       });
 
-      if (configWritten) {
-        steps.push("   Configuration written to .mcp.json");
-      } else {
-        steps.push("   Warning: Could not write to .mcp.json");
+      if (!configResult.success) {
+        const result = {
+          success: false,
+          error: configResult.error || "Failed to write configuration",
+          server_name: server.qualifiedName,
+          steps: [...steps, `   Error: ${configResult.error}`]
+        };
+
+        logToolCall("installFromSmithery", input, result);
+
+        return {
+          content: [{
+            type: "text" as const,
+            text: JSON.stringify(result, null, 2)
+          }]
+        };
       }
+
+      steps.push("   Configuration written to .mcp.json");
 
       const result = {
         success: true,
         server: installed,
         installCommand: getInstallCommand(server),
         needsRestart: connectionType === "local",
-        config_written: configWritten,
+        config_written: configResult.success,
         steps,
         next_steps: [
           "Configuration written to .mcp.json",

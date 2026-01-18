@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-01-17T22:03:56.819Z",
+  "updatedAt": "2026-01-18T01:36:20.842Z",
   "servers": [
     {
       "qualifiedName": "@smithery-ai/github",
@@ -86,6 +86,21 @@
         "args": [
           "-y",
           "@tavily-ai/tavily-mcp"
+        ],
+        "env": {}
+      }
+    },
+    {
+      "qualifiedName": "@microsoft/playwright-mcp",
+      "displayName": "Playwright Automation",
+      "connectionType": "remote",
+      "status": "connected",
+      "installedAt": "2026-01-18T01:36:20.841Z",
+      "config": {
+        "command": "npx",
+        "args": [
+          "-y",
+          "@microsoft/playwright-mcp"
         ],
         "env": {}
       }

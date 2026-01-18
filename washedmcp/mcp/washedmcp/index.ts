@@ -347,20 +347,20 @@ export class washedMCPService {
       };
     }
 
-    // Write configuration to .mcp.json
-    const configWritten = updateMcpConfig(mcp.name, {
+    // Write configuration to .mcp.json (validates npm package first)
+    const configResult = await updateMcpConfig(mcp.name, {
       command,
       args,
       env: providedEnvVars
     });
 
-    if (!configWritten) {
+    if (!configResult.success) {
       return {
         content: [{
           type: "text" as const,
           text: JSON.stringify({
             success: false,
-            error: "Failed to write configuration to .mcp.json",
+            error: configResult.error || "Failed to write configuration to .mcp.json",
             mcp_name: mcp.name
           }, null, 2)
         }]
@@ -408,8 +408,9 @@ export class washedMCPService {
     inputClass: StatusInput
   })
   async getMCPInstallationStatus(input: StatusInput) {
-    // First check local .mcp.json (for development/testing)
-    const mcpJsonPath = path.join(process.cwd(), ".mcp.json");
+    // Check project root's .mcp.json (one level up from washedmcp/)
+    const projectRoot = path.resolve(process.cwd(), "..");
+    const mcpJsonPath = path.join(projectRoot, ".mcp.json");
     let localConfig: any = null;
     
     if (fs.existsSync(mcpJsonPath)) {
