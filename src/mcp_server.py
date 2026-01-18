@@ -41,7 +41,8 @@ async def list_tools():
                 "type": "object",
                 "properties": {
                     "query": {"type": "string", "description": "What to search for"},
-                    "top_k": {"type": "integer", "description": "Results count", "default": 5}
+                    "top_k": {"type": "integer", "description": "Results count", "default": 5},
+                    "depth": {"type": "integer", "description": "Context expansion depth (1=direct, 2=indirect)", "default": 1}
                 },
                 "required": ["query"]
             }
@@ -59,7 +60,7 @@ async def call_tool(name: str, arguments: dict):
     try:
         # Lazy imports
         from src.indexer import index_codebase
-        from src.searcher import search_code, is_indexed
+        from src.searcher import search_code, search_code_with_context, is_indexed
         from src.toon_formatter import format_results
 
         if name == "index_codebase":
@@ -81,8 +82,17 @@ async def call_tool(name: str, arguments: dict):
             if not is_indexed():
                 text = "Not indexed. Run index_codebase first."
             else:
-                results = search_code(query, top_k=arguments.get("top_k", 5))
-                text = format_results(results, format="toon") if results else "No results."
+                depth = arguments.get("depth", 1)
+                result = search_code_with_context(
+                    query,
+                    top_k=arguments.get("top_k", 5),
+                    depth=depth
+                )
+                if result["results"]:
+                    from src.toon_formatter import format_results_rich
+                    text = format_results_rich(result["results"], result["context"])
+                else:
+                    text = "No results."
 
         elif name == "get_index_status":
             if is_indexed():

@@ -87,13 +87,94 @@ def format_results_json(results: list[dict]) -> str:
     return json.dumps(results, indent=2)
 
 
-def format_results(results: list[dict], format: str = "toon") -> str:
+def format_results_rich(results: list[dict], context: dict = None) -> str:
+    """
+    Format search results with rich context (calls, callers, same file).
+
+    Args:
+        results: List of search result dicts
+        context: Optional context dict from get_function_context() with keys:
+            - function: The main function dict
+            - callees: Functions this one calls
+            - callers: Functions that call this one
+            - same_file: Other functions in the same file
+
+    Returns:
+        Rich formatted string for display
+    """
+    if not results:
+        return "No results found."
+
+    lines = []
+    best = results[0]
+
+    # Format the best match header
+    func_name = best.get("function_name", "unknown")
+    file_path = best.get("file_path", "unknown")
+    line_start = best.get("line_start", 0)
+    similarity = best.get("similarity", 0.0)
+    similarity_pct = int(similarity * 100)
+
+    lines.append(f"FOUND: {func_name}() in {file_path}:{line_start} ({similarity_pct}% match)")
+    lines.append("")
+
+    # Show the code if available
+    code = best.get("code", best.get("body", ""))
+    if code:
+        lines.append("CODE:")
+        code_lines = code.strip().split("\n")
+        # Truncate to ~20 lines if too long
+        if len(code_lines) > 20:
+            code_lines = code_lines[:20]
+            code_lines.append("  ... (truncated)")
+        for code_line in code_lines:
+            lines.append(f"  {code_line}")
+        lines.append("")
+
+    # Show context relationships if provided
+    if context:
+        # CALLS: functions this one calls
+        callees = context.get("callees", [])
+        if callees:
+            callee_names = [f.get("function_name", "unknown") for f in callees]
+            lines.append(f"CALLS: {', '.join(callee_names)}")
+
+        # CALLED BY: functions that call this one
+        callers = context.get("callers", [])
+        if callers:
+            caller_names = [f.get("function_name", "unknown") for f in callers]
+            lines.append(f"CALLED BY: {', '.join(caller_names)}")
+
+        # SAME FILE: other functions in the same file
+        same_file = context.get("same_file", [])
+        if same_file:
+            same_file_names = [f.get("function_name", "unknown") for f in same_file]
+            lines.append(f"SAME FILE: {', '.join(same_file_names)}")
+
+        if callees or callers or same_file:
+            lines.append("")
+
+    # Show additional matches if there are more results
+    if len(results) > 1:
+        lines.append("---")
+        lines.append("Additional matches:")
+        for result in results[1:]:
+            r_file = result.get("file_path", "unknown")
+            r_line = result.get("line_start", 0)
+            r_sim = int(result.get("similarity", 0.0) * 100)
+            lines.append(f"  {r_file}:{r_line} ({r_sim}%)")
+
+    return "\n".join(lines)
+
+
+def format_results(results: list[dict], format: str = "toon", context: dict = None) -> str:
     """
     Format search results in the specified format.
 
     Args:
         results: list of search result dictionaries
-        format: "toon" or "json"
+        format: "toon", "json", or "rich"
+        context: Optional context dict for rich format (from get_function_context())
 
     Returns:
         Formatted string
@@ -102,8 +183,10 @@ def format_results(results: list[dict], format: str = "toon") -> str:
         return format_results_toon(results)
     elif format == "json":
         return format_results_json(results)
+    elif format == "rich":
+        return format_results_rich(results, context)
     else:
-        raise ValueError(f"Unknown format: {format}. Use 'toon' or 'json'.")
+        raise ValueError(f"Unknown format: {format}. Use 'toon', 'json', or 'rich'.")
 
 
 if __name__ == "__main__":
