@@ -1,0 +1,52 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "washedmcp"
+version = "0.1.0"
+description = "Token-optimized semantic code search MCP server for AI coding assistants"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.10"
+authors = [
+    {name = "Pratham"}
+]
+keywords = ["mcp", "code-search", "semantic-search", "chromadb", "ai", "claude"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+
+dependencies = [
+    "chromadb>=0.4.0",
+    "mcp>=1.0.0",
+    "sentence-transformers>=2.0.0",
+    "tree-sitter>=0.20.0",
+    "tree-sitter-python>=0.20.0",
+    "tree-sitter-javascript>=0.20.0",
+    "tree-sitter-typescript>=0.20.0",
+]
+
+[project.optional-dependencies]
+summarize = ["google-generativeai>=0.3.0"]
+
+[project.scripts]
+washedmcp = "washedmcp.mcp_server:main"
+
+[project.urls]
+Homepage = "https://github.com/pratham/washedmcp"
+Repository = "https://github.com/pratham/washedmcp"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["washedmcp*"]
+
+[tool.setuptools.package-data]
+washedmcp = ["py.typed"]

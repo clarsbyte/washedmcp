@@ -1,20 +1,22 @@
-node_modules/
-*/node_modules/
-
-# Front-end
-washedmcp-frontend/node_modules
-washedmcp-frontend/.next
-washedmcp-frontend/.env
-
 # Python
 __pycache__/
 *.pyc
 *.pyo
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
+
+# Environment
 .env
 
-# Database (local index)
+# ChromaDB index (local data)
 .washedmcp/
 
 # IDE
 .vscode/
 .idea/
+
+# Backup zips
+*.zip
