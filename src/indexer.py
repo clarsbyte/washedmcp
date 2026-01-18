@@ -11,7 +11,7 @@ from typing import Dict, List, Any
 from src.parser import extract_functions, get_supported_extensions
 from src.embedder import embed_batch
 from src.summarizer import summarize_batch
-from src.database import init_db, add_functions, clear_collection, get_stats
+from src.database import init_db, add_functions, clear_collection, get_stats, compute_called_by
 
 
 # Directories to skip during indexing
@@ -178,6 +178,11 @@ def index_codebase(
             "functions_indexed": 0,
             "path": abs_path,
         }
+
+    # Step 7.5: Compute reverse call relationships
+    print("-" * 50)
+    print("Computing call relationships...")
+    compute_called_by()
 
     # Step 8: Get final stats and return
     print("-" * 50)
