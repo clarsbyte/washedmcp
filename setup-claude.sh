@@ -1,6 +1,6 @@
 #!/bin/bash
 # WashedMCP Setup for Claude Code
-# Usage: curl -fsSL https://raw.githubusercontent.com/clarsbyte/washedmcp/main/setup-claude.sh | bash
+# Handles: missing Python, old Python, missing pip, broken apt, all major distros
 
 echo "═══════════════════════════════════════════════════════"
 echo "       WashedMCP Setup for Claude Code"
@@ -8,23 +8,27 @@ echo "════════════════════════�
 echo ""
 
 # Detect OS
-OS="unknown"
-if [[ "$OSTYPE" == "darwin"* ]]; then
-    OS="macos"
-elif [[ -f /etc/os-release ]]; then
-    . /etc/os-release
-    OS="$ID"
-fi
+detect_os() {
+    if [[ "$OSTYPE" == "darwin"* ]]; then
+        echo "macos"
+    elif [[ -f /etc/os-release ]]; then
+        . /etc/os-release
+        echo "$ID"
+    else
+        echo "unknown"
+    fi
+}
 
+OS=$(detect_os)
 echo "Detected OS: $OS"
 
 # Find suitable Python (3.10-3.13)
 find_python() {
-    for py in python3.12 python3.11 python3.10 python3.13 python3; do
+    for py in python3.12 python3.11 python3.10 python3.13 /usr/bin/python3.12 /usr/bin/python3.11 /usr/bin/python3.10; do
         if command -v $py &> /dev/null; then
             version=$($py -c 'import sys; print(sys.version_info.minor)' 2>/dev/null || echo "0")
-            if [ "$version" -ge 10 ] && [ "$version" -lt 14 ]; then
-                echo $py
+            if [ "$version" -ge 10 ] 2>/dev/null && [ "$version" -lt 14 ] 2>/dev/null; then
+                command -v $py
                 return 0
             fi
         fi
@@ -32,170 +36,251 @@ find_python() {
     return 1
 }
 
-# Install Python automatically based on OS
-install_python() {
-    echo ""
-    echo "Installing Python 3.12..."
-    echo ""
+# Try to fix common apt issues
+fix_apt_sources() {
+    echo "Checking apt sources..."
+    # Remove known problematic source files
+    for f in /etc/apt/sources.list.d/*.list; do
+        if [ -f "$f" ] && grep -q "Malformed" "$f" 2>/dev/null; then
+            echo "Removing broken source: $f"
+            sudo rm -f "$f" 2>/dev/null || true
+        fi
+    done
+    # Try to fix any broken sources by testing apt-get update
+    if ! sudo apt-get update -qq 2>/dev/null; then
+        echo "Attempting to fix apt sources..."
+        # Find and remove any sources causing errors
+        for f in /etc/apt/sources.list.d/*.list; do
+            if [ -f "$f" ]; then
+                if ! sudo apt-get update -o Dir::Etc::sourcelist="$f" -o Dir::Etc::sourceparts="-" -qq 2>/dev/null; then
+                    echo "Removing problematic source: $f"
+                    sudo rm -f "$f" 2>/dev/null || true
+                fi
+            fi
+        done
+    fi
+}
 
+# Install Python on Ubuntu/Debian
+install_python_debian() {
+    echo ""
+    echo "Installing Python on Ubuntu/Debian..."
+
+    # Fix apt sources first
+    fix_apt_sources
+
+    # Try multiple Python versions, newest first
+    for pyver in 3.12 3.11 3.10; do
+        echo "Trying Python $pyver..."
+
+        # Add deadsnakes PPA if not present
+        if ! grep -q "deadsnakes" /etc/apt/sources.list.d/* 2>/dev/null; then
+            sudo add-apt-repository -y ppa:deadsnakes/ppa 2>/dev/null || true
+            sudo apt-get update -qq 2>/dev/null || true
+        fi
+
+        # Try to install (only base package, skip venv/distutils if not available)
+        if sudo apt-get install -y python$pyver 2>/dev/null; then
+            # Try optional packages but don't fail if missing
+            sudo apt-get install -y python$pyver-venv 2>/dev/null || true
+            sudo apt-get install -y python$pyver-distutils 2>/dev/null || true
+
+            # Install pip via get-pip.py (most reliable method)
+            echo "Installing pip..."
+            curl -sS https://bootstrap.pypa.io/get-pip.py -o /tmp/get-pip.py
+            sudo python$pyver /tmp/get-pip.py 2>/dev/null || python$pyver /tmp/get-pip.py --user 2>/dev/null || true
+            rm -f /tmp/get-pip.py
+
+            if command -v python$pyver &> /dev/null; then
+                echo "Python $pyver installed successfully"
+                return 0
+            fi
+        fi
+    done
+
+    # Last resort: try system python3 upgrade or install from source
+    echo "PPA installation failed, trying alternative methods..."
+
+    # Check if we can use existing python3 with version upgrade
+    if command -v python3 &> /dev/null; then
+        pyver=$(python3 -c 'import sys; print(sys.version_info.minor)')
+        if [ "$pyver" -ge 10 ] 2>/dev/null; then
+            return 0
+        fi
+    fi
+
+    return 1
+}
+
+# Install Python on macOS
+install_python_macos() {
+    echo ""
+    echo "Installing Python on macOS..."
+
+    if command -v brew &> /dev/null; then
+        brew install python@3.12 2>/dev/null || brew install python@3.11 2>/dev/null || brew install python@3.10 2>/dev/null
+    else
+        echo "Homebrew not found. Installing Homebrew first..."
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+        brew install python@3.12
+    fi
+}
+
+# Install Python on Fedora/RHEL
+install_python_fedora() {
+    echo ""
+    echo "Installing Python on Fedora/RHEL..."
+    sudo dnf install -y python3.12 python3.12-pip 2>/dev/null || \
+    sudo dnf install -y python3.11 python3.11-pip 2>/dev/null || \
+    sudo dnf install -y python3.10 python3.10-pip 2>/dev/null || \
+    sudo dnf install -y python3 python3-pip 2>/dev/null
+}
+
+# Install Python on Arch
+install_python_arch() {
+    echo ""
+    echo "Installing Python on Arch..."
+    sudo pacman -Sy --noconfirm python python-pip 2>/dev/null
+}
+
+# Main Python installation
+install_python() {
     case "$OS" in
         macos)
-            if command -v brew &> /dev/null; then
-                brew install python@3.12
-            else
-                echo "ERROR: Homebrew not found."
-                echo ""
-                echo "Install Homebrew first:"
-                echo '  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"'
-                echo ""
-                echo "Then run this script again."
-                exit 1
-            fi
+            install_python_macos
             ;;
-        ubuntu|debian|pop|linuxmint)
-            echo "Adding deadsnakes PPA for Python 3.12..."
-            sudo apt-get update -qq
-            sudo apt-get install -y software-properties-common
-            sudo add-apt-repository -y ppa:deadsnakes/ppa
-            sudo apt-get update -qq
-            sudo apt-get install -y python3.12 python3.12-venv python3.12-distutils curl
-            echo "Installing pip for Python 3.12..."
-            curl -sS https://bootstrap.pypa.io/get-pip.py | sudo python3.12
+        ubuntu|debian|pop|linuxmint|elementary)
+            install_python_debian
             ;;
-        fedora)
-            sudo dnf install -y python3.12 python3.12-pip
-            ;;
-        rhel|centos|rocky|almalinux)
-            sudo dnf install -y epel-release
-            sudo dnf install -y python3.12 python3.12-pip
+        fedora|rhel|centos|rocky|almalinux)
+            install_python_fedora
             ;;
         arch|manjaro|endeavouros)
-            sudo pacman -Sy --noconfirm python python-pip
+            install_python_arch
             ;;
         opensuse*)
-            sudo zypper install -y python312 python312-pip
+            sudo zypper install -y python312 python312-pip 2>/dev/null || \
+            sudo zypper install -y python311 python311-pip 2>/dev/null || \
+            sudo zypper install -y python310 python310-pip 2>/dev/null
             ;;
         *)
-            echo "ERROR: Cannot auto-install Python on $OS"
-            echo ""
-            echo "Please install Python 3.10-3.13 manually:"
-            echo "  https://www.python.org/downloads/"
-            echo ""
-            echo "Then run this script again."
-            exit 1
+            echo "Unsupported OS: $OS"
+            echo "Please install Python 3.10+ manually from https://www.python.org/downloads/"
+            return 1
             ;;
     esac
 }
 
 # Check for Python
-PYTHON=$(find_python || echo "")
+PYTHON=$(find_python)
 
 if [ -z "$PYTHON" ]; then
     echo "Python 3.10-3.13 not found."
 
-    # Show what Python IS available
     if command -v python3 &> /dev/null; then
-        current_version=$(python3 -c 'import sys; print(f"{sys.version_info.major}.{sys.version_info.minor}")')
-        echo "Current Python: $current_version (not compatible, need 3.10-3.13)"
+        current=$(python3 --version 2>&1)
+        echo "Current: $current (need 3.10-3.13)"
     fi
 
-    # Auto-install Python
+    echo ""
     install_python
 
-    # Try finding Python again
-    PYTHON=$(find_python || echo "")
+    # Find Python again after installation
+    PYTHON=$(find_python)
 
     if [ -z "$PYTHON" ]; then
         echo ""
-        echo "ERROR: Python installation failed."
-        echo "Please install Python 3.10-3.13 manually and run this script again."
+        echo "═══════════════════════════════════════════════════════"
+        echo "ERROR: Could not install Python 3.10-3.13"
+        echo "═══════════════════════════════════════════════════════"
+        echo ""
+        echo "Please install manually:"
+        case "$OS" in
+            ubuntu|debian)
+                echo "  sudo apt install python3.11"
+                ;;
+            fedora)
+                echo "  sudo dnf install python3.11"
+                ;;
+            macos)
+                echo "  brew install python@3.11"
+                ;;
+            *)
+                echo "  https://www.python.org/downloads/"
+                ;;
+        esac
+        echo ""
+        echo "Then run this script again."
         exit 1
     fi
 fi
 
+echo ""
 echo "Using: $PYTHON ($($PYTHON --version 2>&1))"
 
 # Ensure pip is available
-if ! $PYTHON -m pip --version &> /dev/null; then
-    echo ""
+if ! $PYTHON -m pip --version &> /dev/null 2>&1; then
     echo "Installing pip..."
-    curl -sS https://bootstrap.pypa.io/get-pip.py | $PYTHON --user 2>/dev/null || \
-    curl -sS https://bootstrap.pypa.io/get-pip.py | sudo $PYTHON 2>/dev/null || true
+    curl -sS https://bootstrap.pypa.io/get-pip.py -o /tmp/get-pip.py
+    $PYTHON /tmp/get-pip.py --user 2>/dev/null || sudo $PYTHON /tmp/get-pip.py 2>/dev/null || true
+    rm -f /tmp/get-pip.py
 fi
 
 # Install washedmcp
 echo ""
 echo "Installing washedmcp..."
 
-# Try different installation methods (suppress verbose output)
-installed=false
-
-if command -v pipx &> /dev/null; then
-    echo "Using pipx..."
-    if pipx install washedmcp --python $PYTHON 2>/dev/null || pipx upgrade washedmcp 2>/dev/null; then
-        installed=true
-    fi
-fi
-
-if [ "$installed" = false ]; then
-    echo "Using pip..."
-    if $PYTHON -m pip install --user washedmcp -q 2>/dev/null; then
-        installed=true
-    elif $PYTHON -m pip install washedmcp -q 2>/dev/null; then
-        installed=true
-    elif sudo $PYTHON -m pip install washedmcp -q 2>/dev/null; then
-        installed=true
-    fi
-fi
-
-if [ "$installed" = false ]; then
-    echo "ERROR: Failed to install washedmcp"
+# Suppress output, just show result
+if $PYTHON -m pip install --user washedmcp -q 2>/dev/null; then
+    echo "Installed with pip --user"
+elif $PYTHON -m pip install washedmcp -q 2>/dev/null; then
+    echo "Installed with pip"
+elif sudo $PYTHON -m pip install washedmcp -q 2>/dev/null; then
+    echo "Installed with sudo pip"
+else
     echo ""
-    echo "Try manually:"
-    echo "  $PYTHON -m pip install washedmcp"
-    exit 1
+    echo "ERROR: pip install failed. Trying with --break-system-packages..."
+    if $PYTHON -m pip install --user --break-system-packages washedmcp 2>/dev/null; then
+        echo "Installed with --break-system-packages"
+    else
+        echo "ERROR: Could not install washedmcp"
+        echo "Try manually: $PYTHON -m pip install washedmcp"
+        exit 1
+    fi
 fi
-
-echo "washedmcp installed!"
 
 # Configure Claude Code
 CLAUDE_CONFIG="$HOME/.claude.json"
+PYTHON_PATH="$PYTHON"
 
 echo ""
 echo "Configuring Claude Code..."
 
-# Use full path to python for reliability
-PYTHON_PATH=$(command -v $PYTHON)
-
+# Create or update config
 if [ -f "$CLAUDE_CONFIG" ]; then
     cp "$CLAUDE_CONFIG" "$CLAUDE_CONFIG.backup"
 
-    if grep -q "washedmcp" "$CLAUDE_CONFIG"; then
-        echo "washedmcp already in Claude config"
+    if grep -q "washedmcp" "$CLAUDE_CONFIG" 2>/dev/null; then
+        echo "washedmcp already configured"
     else
-        $PYTHON << PYEOF
+        # Add to existing config
+        $PYTHON -c "
 import json
-import os
-
-config_path = os.path.expanduser("~/.claude.json")
-with open(config_path, "r") as f:
+config_path = '$CLAUDE_CONFIG'
+with open(config_path) as f:
     config = json.load(f)
-
-if "mcpServers" not in config:
-    config["mcpServers"] = {}
-
-config["mcpServers"]["washedmcp"] = {
-    "command": "$PYTHON_PATH",
-    "args": ["-m", "washedmcp.mcp_server"]
+config.setdefault('mcpServers', {})['washedmcp'] = {
+    'command': '$PYTHON_PATH',
+    'args': ['-m', 'washedmcp.mcp_server']
 }
-
-with open(config_path, "w") as f:
+with open(config_path, 'w') as f:
     json.dump(config, f, indent=2)
-
-print("Added washedmcp to Claude config")
-PYEOF
+print('Added to existing config')
+" 2>/dev/null || echo "Config update failed, please add manually"
     fi
 else
+    # Create new config
+    mkdir -p "$(dirname "$CLAUDE_CONFIG")"
     cat > "$CLAUDE_CONFIG" << EOF
 {
   "mcpServers": {
@@ -206,7 +291,7 @@ else
   }
 }
 EOF
-    echo "Created Claude config"
+    echo "Created new config"
 fi
 
 echo ""
@@ -214,8 +299,6 @@ echo "════════════════════════�
 echo "            Setup complete!"
 echo "═══════════════════════════════════════════════════════"
 echo ""
-echo "Next steps:"
-echo "  1. Restart Claude Code"
-echo "  2. Say: 'Index this codebase'"
-echo "  3. Say: 'Search for user authentication'"
+echo "Restart Claude Code, then say:"
+echo "  'Index this codebase'"
 echo ""
