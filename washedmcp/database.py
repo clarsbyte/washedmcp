@@ -13,17 +13,39 @@ from typing import Optional
 import chromadb
 from chromadb.config import Settings
 
+from .config import get_config
+from .logging_config import get_logger
+from .security import (
+    validate_embedding,
+    validate_embeddings_batch,
+    EmbeddingValidationError,
+    EXPECTED_EMBEDDING_DIM,
+)
+
+logger = get_logger(__name__)
+
 # Global state
 _client = None
 _collection = None
 _persist_path = None
 
 
-def init_db(persist_path: str = "./.washedmcp/chroma") -> chromadb.Collection:
+def init_db(persist_path: str = None) -> chromadb.Collection:
     """
     Initialize Chroma with persistence and return or create collection named 'codebase'.
+
+    Args:
+        persist_path: Path to persist the database. If None, uses config default.
     """
     global _client, _collection, _persist_path
+
+    config = get_config()
+
+    # Use config default if not specified
+    if persist_path is None:
+        persist_path = config.database.default_persist_path
+
+    logger.debug("Initializing database at %s", persist_path)
 
     # Create directory if it doesn't exist
     os.makedirs(persist_path, exist_ok=True)
@@ -31,14 +53,18 @@ def init_db(persist_path: str = "./.washedmcp/chroma") -> chromadb.Collection:
     _persist_path = persist_path
     _client = chromadb.PersistentClient(
         path=persist_path,
-        settings=Settings(anonymized_telemetry=False)
+        settings=Settings(anonymized_telemetry=config.database.anonymized_telemetry)
     )
+
+    # Map config distance metric to ChromaDB space
+    distance_space = config.database.distance_metric
 
     _collection = _client.get_or_create_collection(
-        name="codebase",
-        metadata={"hnsw:space": "cosine"}
+        name=config.database.collection_name,
+        metadata={"hnsw:space": distance_space}
     )
 
+    logger.debug("Database initialized with collection '%s'", config.database.collection_name)
     return _collection
 
 
@@ -54,11 +80,26 @@ def add_functions(functions: list[dict]) -> None:
     """
     Add functions to the collection.
     Each function dict should have: name, code, file_path, line_start, line_end, language, summary, embedding
+
+    Raises:
+        EmbeddingValidationError: If any embedding has invalid dimensions or format.
     """
     collection = _get_collection()
 
     if not functions:
+        logger.debug("No functions to add")
         return
+
+    logger.debug("Adding %d functions to collection", len(functions))
+
+    # Validate all embeddings before proceeding
+    embeddings_to_validate = [f.get("embedding") for f in functions if f.get("embedding") is not None]
+    if embeddings_to_validate:
+        try:
+            validate_embeddings_batch(embeddings_to_validate, EXPECTED_EMBEDDING_DIM)
+        except EmbeddingValidationError as e:
+            logger.error("Embedding validation failed: %s", e)
+            raise
 
     ids = []
     documents = []
@@ -98,10 +139,11 @@ def add_functions(functions: list[dict]) -> None:
             "called_by": "[]"  # Will be computed later via compute_called_by()
         })
 
-    # Upsert in batches (Chroma max is ~5000)
-    BATCH_SIZE = 5000
-    for i in range(0, len(ids), BATCH_SIZE):
-        batch_end = min(i + BATCH_SIZE, len(ids))
+    # Upsert in batches using config batch size
+    config = get_config()
+    batch_size = config.database.upsert_batch_size
+    for i in range(0, len(ids), batch_size):
+        batch_end = min(i + batch_size, len(ids))
         collection.upsert(
             ids=ids[i:batch_end],
             documents=documents[i:batch_end],
@@ -113,13 +155,25 @@ def add_functions(functions: list[dict]) -> None:
 def search(query_embedding: list[float], top_k: int = 5) -> list[dict]:
     """
     Search for similar code using the query embedding.
+
+    Raises:
+        EmbeddingValidationError: If query embedding has invalid dimensions or format.
     """
+    # Validate query embedding
+    try:
+        validate_embedding(query_embedding, EXPECTED_EMBEDDING_DIM)
+    except EmbeddingValidationError as e:
+        logger.error("Query embedding validation failed: %s", e)
+        raise
+
     collection = _get_collection()
 
     if collection.count() == 0:
+        logger.debug("Search called on empty collection")
         return []
 
     actual_top_k = min(top_k, collection.count())
+    logger.debug("Searching for top %d results", actual_top_k)
 
     results = collection.query(
         query_embeddings=[query_embedding],
@@ -165,7 +219,10 @@ def clear_collection() -> None:
     collection = _get_collection()
     all_ids = collection.get()["ids"]
     if all_ids:
+        logger.info("Clearing %d items from collection", len(all_ids))
         collection.delete(ids=all_ids)
+    else:
+        logger.debug("Collection already empty")
 
 
 def get_stats() -> dict:
@@ -183,7 +240,10 @@ def compute_called_by() -> None:
     collection = _get_collection()
 
     if collection.count() == 0:
+        logger.debug("No functions in collection to compute called_by")
         return
+
+    logger.info("Computing called_by relationships for %d functions", collection.count())
 
     # Get all functions from the collection
     all_data = collection.get(include=["metadatas"])

@@ -8,23 +8,37 @@ Runs locally - no API needed, free, fast.
 from typing import List
 from sentence_transformers import SentenceTransformer
 
-# Model configuration
-MODEL_NAME = "all-MiniLM-L6-v2"
-EMBEDDING_DIMENSIONS = 384
+from .config import get_config
+from .logging_config import get_logger
+
+logger = get_logger(__name__)
 
 # Lazy model initialization
 _model = None
+_current_model_name = None
 
 
 def _get_model() -> SentenceTransformer:
     """Get or create the model lazily."""
-    global _model
-    if _model is None:
-        print("Downloading embedding model (~100MB, first time only)...")
-        print("This may take a minute on slow connections...")
-        _model = SentenceTransformer(MODEL_NAME)
-        print("Model ready!")
+    global _model, _current_model_name
+
+    config = get_config()
+    model_name = config.embedder.model_name
+
+    # Reinitialize if model name changed
+    if _model is None or _current_model_name != model_name:
+        logger.info("Downloading embedding model '%s' (~100MB, first time only)...", model_name)
+        logger.info("This may take a minute on slow connections...")
+        _model = SentenceTransformer(model_name)
+        _current_model_name = model_name
+        logger.info("Embedding model ready")
+
     return _model
+
+
+def get_embedding_dimensions() -> int:
+    """Get the expected embedding dimensions from config."""
+    return get_config().embedder.embedding_dimensions
 
 
 def embed_code(code: str) -> List[float]:
@@ -62,8 +76,13 @@ def embed_batch(codes: List[str]) -> List[List[float]]:
         if not code or not code.strip():
             raise ValueError(f"Code snippet at index {i} cannot be empty")
 
+    config = get_config()
     model = _get_model()
-    embeddings = model.encode(codes, convert_to_numpy=True, show_progress_bar=True)
+    embeddings = model.encode(
+        codes,
+        convert_to_numpy=True,
+        show_progress_bar=config.embedder.show_progress_bar
+    )
     return [emb.tolist() for emb in embeddings]
 
 
@@ -91,6 +110,7 @@ if __name__ == "__main__":
     print(f"Testing embedding for: {test_code}")
 
     embedding = embed_code(test_code)
+    expected_dim = get_embedding_dimensions()
     print(f"Embedding length: {len(embedding)}")
-    print(f"Expected length: {EMBEDDING_DIMENSIONS}")
-    print(f"Test passed: {len(embedding) == EMBEDDING_DIMENSIONS}")
+    print(f"Expected length: {expected_dim}")
+    print(f"Test passed: {len(embedding) == expected_dim}")

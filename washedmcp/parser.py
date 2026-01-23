@@ -19,6 +19,17 @@ import tree_sitter_javascript as tsjavascript
 import tree_sitter_typescript as tstypescript
 from tree_sitter import Language, Parser
 
+from .config import get_config
+from .logging_config import get_logger
+from .security import (
+    validate_file_size,
+    sanitize_path,
+    SecurityError,
+    MAX_FILE_SIZE_MB,
+)
+
+logger = get_logger(__name__)
+
 
 # Initialize languages
 PY_LANGUAGE = Language(tspython.language())
@@ -27,21 +38,36 @@ TS_LANGUAGE = Language(tstypescript.language_typescript())
 TSX_LANGUAGE = Language(tstypescript.language_tsx())
 
 
-# Extension to language mapping
-EXTENSION_MAP = {
-    ".py": ("python", PY_LANGUAGE),
-    ".js": ("javascript", JS_LANGUAGE),
-    ".jsx": ("javascript", JS_LANGUAGE),  # JSX uses JS grammar
-    ".ts": ("typescript", TS_LANGUAGE),
-    ".tsx": ("typescript", TSX_LANGUAGE),
-    ".mjs": ("javascript", JS_LANGUAGE),
-    ".cjs": ("javascript", JS_LANGUAGE),
-}
+def _get_extension_map() -> dict:
+    """
+    Build extension to (language_name, Language) mapping from config.
+
+    The config stores extension -> language_name, we need to map to actual
+    Language objects at runtime.
+    """
+    config = get_config()
+    lang_objects = {
+        "python": PY_LANGUAGE,
+        "javascript": JS_LANGUAGE,
+        "typescript": TS_LANGUAGE,
+    }
+
+    # TSX needs special handling
+    extension_map = {}
+    for ext, lang_name in config.parser.extension_languages.items():
+        if ext == ".tsx":
+            extension_map[ext] = (lang_name, TSX_LANGUAGE)
+        else:
+            lang_obj = lang_objects.get(lang_name)
+            if lang_obj:
+                extension_map[ext] = (lang_name, lang_obj)
+
+    return extension_map
 
 
 def get_supported_extensions() -> list[str]:
     """Return list of supported file extensions."""
-    return list(EXTENSION_MAP.keys())
+    return list(_get_extension_map().keys())
 
 
 def _create_parser(language: Language) -> Parser:
@@ -845,10 +871,11 @@ def extract_file_info(file_path: str) -> dict:
 
     try:
         _, ext = os.path.splitext(file_path)
-        if ext not in EXTENSION_MAP:
+        extension_map = _get_extension_map()
+        if ext not in extension_map:
             return result
 
-        lang_name, language = EXTENSION_MAP[ext]
+        lang_name, language = extension_map[ext]
         abs_path = os.path.abspath(file_path)
 
         with open(abs_path, "rb") as f:
@@ -875,17 +902,17 @@ def extract_file_info(file_path: str) -> dict:
             if e.get("kind") in function_kinds
         ]
 
-    except (OSError, IOError, UnicodeDecodeError):
-        pass
+    except (OSError, IOError, UnicodeDecodeError) as e:
+        logger.debug("Failed to read file %s: %s", file_path, e)
     except Exception:
-        pass
+        logger.exception("Unexpected error extracting file info from %s", file_path)
 
     return result
 
 
 # ============== MAIN EXTRACTION ==============
 
-def extract_functions(file_path: str) -> list[dict]:
+def extract_functions(file_path: str, max_file_size_mb: float = MAX_FILE_SIZE_MB) -> list[dict]:
     """
     Extract all functions, classes, and methods from a source file.
 
@@ -900,6 +927,7 @@ def extract_functions(file_path: str) -> list[dict]:
 
     Args:
         file_path: Path to the source file to parse.
+        max_file_size_mb: Maximum file size in MB to process (default: 10MB).
 
     Returns:
         List of dictionaries containing:
@@ -916,12 +944,23 @@ def extract_functions(file_path: str) -> list[dict]:
     Returns empty list if file cannot be parsed or unsupported.
     """
     try:
+        # Sanitize the path first
+        file_path = sanitize_path(file_path)
+
         _, ext = os.path.splitext(file_path)
-        if ext not in EXTENSION_MAP:
+        extension_map = _get_extension_map()
+        if ext not in extension_map:
             return []
 
-        lang_name, language = EXTENSION_MAP[ext]
+        lang_name, language = extension_map[ext]
         abs_path = os.path.abspath(file_path)
+
+        # Validate file size before reading
+        try:
+            validate_file_size(abs_path, max_file_size_mb)
+        except SecurityError as e:
+            logger.warning("Security check failed for %s: %s", file_path, e)
+            return []
 
         with open(abs_path, "rb") as f:
             source_code = f.read()
@@ -934,9 +973,14 @@ def extract_functions(file_path: str) -> list[dict]:
         else:
             return _find_js_entities(tree.root_node, source_code, abs_path, lang_name)
 
-    except (OSError, IOError, UnicodeDecodeError):
+    except SecurityError as e:
+        logger.warning("Security error processing %s: %s", file_path, e)
+        return []
+    except (OSError, IOError, UnicodeDecodeError) as e:
+        logger.debug("Failed to read file %s: %s", file_path, e)
         return []
     except Exception:
+        logger.exception("Unexpected error extracting functions from %s", file_path)
         return []
 
 

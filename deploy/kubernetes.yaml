@@ -1,0 +1,180 @@
+# WashedMCP Kubernetes Deployment
+# Token-optimized semantic code search MCP server
+
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: washedmcp
+  labels:
+    app.kubernetes.io/name: washedmcp
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: washedmcp-config
+  namespace: washedmcp
+data:
+  LOG_LEVEL: "INFO"
+  HEALTH_PORT: "8080"
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: washedmcp-secrets
+  namespace: washedmcp
+type: Opaque
+stringData:
+  # Optional: Add your Anthropic API key for summarization
+  ANTHROPIC_API_KEY: ""
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: washedmcp-data
+  namespace: washedmcp
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: washedmcp
+  namespace: washedmcp
+  labels:
+    app.kubernetes.io/name: washedmcp
+    app.kubernetes.io/component: server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: washedmcp
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: washedmcp
+        app.kubernetes.io/component: server
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        fsGroup: 1000
+
+      containers:
+        - name: washedmcp
+          image: washedmcp:latest
+          imagePullPolicy: IfNotPresent
+
+          args:
+            - "--with-health-server"
+            - "--health-port=8080"
+
+          ports:
+            - name: health
+              containerPort: 8080
+              protocol: TCP
+
+          envFrom:
+            - configMapRef:
+                name: washedmcp-config
+            - secretRef:
+                name: washedmcp-secrets
+
+          env:
+            - name: WASHEDMCP_DATA_DIR
+              value: "/data"
+
+          volumeMounts:
+            - name: data
+              mountPath: /data
+
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "250m"
+            limits:
+              memory: "2Gi"
+              cpu: "1000m"
+
+          livenessProbe:
+            httpGet:
+              path: /health/live
+              port: health
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+
+          readinessProbe:
+            httpGet:
+              path: /health/ready
+              port: health
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: false
+            capabilities:
+              drop:
+                - ALL
+
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: washedmcp-data
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: washedmcp
+  namespace: washedmcp
+  labels:
+    app.kubernetes.io/name: washedmcp
+spec:
+  type: ClusterIP
+  ports:
+    - name: health
+      port: 8080
+      targetPort: health
+      protocol: TCP
+  selector:
+    app.kubernetes.io/name: washedmcp
+
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: washedmcp
+  namespace: washedmcp
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: washedmcp
+  minReplicas: 1
+  maxReplicas: 3
+  metrics:
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: 80
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70

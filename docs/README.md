@@ -75,5 +75,5 @@ On first use, the embedding model (~100MB) will be downloaded. This is a one-tim
 
 ## Requirements
 
-- Python 3.9+
+- Python 3.10-3.13 (Python 3.14+ is not yet supported due to onnxruntime compatibility)
 - ~500MB disk space for model and dependencies

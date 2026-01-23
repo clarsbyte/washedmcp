@@ -6,6 +6,11 @@ Formats search results in a compact, token-efficient tabular format.
 
 import json
 
+from .config import get_config
+from .logging_config import get_logger
+
+logger = get_logger(__name__)
+
 
 def truncate(value: str, max_length: int) -> str:
     """Truncate a string to max_length, adding '...' if truncated."""
@@ -30,14 +35,19 @@ def format_results_toon(results: list[dict]) -> str:
     if not results:
         return "results\n  (empty)"
 
-    # Define column specs: (key, header, max_width, formatter)
-    columns = [
-        ("function_name", "function_name", 20, str),
-        ("file_path", "file_path", 30, str),
-        ("line_start", "line", 6, str),
-        ("summary", "summary", 40, str),
-        ("similarity", "similarity", 10, lambda x: f"{int(x * 100)}%"),
-    ]
+    config = get_config()
+    toon_config = config.toon_formatter
+
+    # Build column specs from config: (key, header, max_width)
+    # Add formatter based on key
+    formatters = {
+        "similarity": lambda x: f"{int(x * 100)}%",
+    }
+
+    columns = []
+    for key, header, max_width in toon_config.columns:
+        formatter = formatters.get(key, str)
+        columns.append((key, header, max_width, formatter))
 
     # Process data rows
     rows = []
@@ -56,17 +66,20 @@ def format_results_toon(results: list[dict]) -> str:
         data_max = max((len(rows[j][i]) for j in range(len(rows))), default=0)
         col_widths.append(max(len(header), data_max))
 
-    # Build output
+    # Build output using config separators
+    row_indent = toon_config.row_indent
+    col_sep = toon_config.column_separator
+
     lines = ["results"]
 
     # Header row
     headers = [columns[i][1].ljust(col_widths[i]) for i in range(len(columns))]
-    lines.append("  " + " | ".join(headers))
+    lines.append(row_indent + col_sep.join(headers))
 
     # Data rows
     for row in rows:
         cells = [row[i].ljust(col_widths[i]) for i in range(len(columns))]
-        lines.append("  " + " | ".join(cells))
+        lines.append(row_indent + col_sep.join(cells))
 
     return "\n".join(lines)
 
@@ -105,6 +118,9 @@ def format_results_rich(results: list[dict], context: dict = None) -> str:
     if not results:
         return "No results found."
 
+    config = get_config()
+    toon_config = config.toon_formatter
+
     lines = []
     best = results[0]
 
@@ -123,10 +139,11 @@ def format_results_rich(results: list[dict], context: dict = None) -> str:
     if code:
         lines.append("CODE:")
         code_lines = code.strip().split("\n")
-        # Truncate to ~20 lines if too long
-        if len(code_lines) > 20:
-            code_lines = code_lines[:20]
-            code_lines.append("  ... (truncated)")
+        max_code_lines = toon_config.max_code_lines
+        # Truncate if too long
+        if len(code_lines) > max_code_lines:
+            code_lines = code_lines[:max_code_lines]
+            code_lines.append(f"  {toon_config.truncation_indicator} (truncated)")
         for code_line in code_lines:
             lines.append(f"  {code_line}")
         lines.append("")
@@ -167,7 +184,7 @@ def format_results_rich(results: list[dict], context: dict = None) -> str:
     return "\n".join(lines)
 
 
-def format_results(results: list[dict], format: str = "toon", context: dict = None) -> str:
+def format_results(results: list[dict], format: str = "toon", context: dict = None, track_stats: bool = True) -> str:
     """
     Format search results in the specified format.
 
@@ -175,18 +192,33 @@ def format_results(results: list[dict], format: str = "toon", context: dict = No
         results: list of search result dictionaries
         format: "toon", "json", or "rich"
         context: Optional context dict for rich format (from get_function_context())
+        track_stats: If True, record token savings statistics
 
     Returns:
         Formatted string
     """
+    logger.debug("Formatting %d results in '%s' format", len(results), format)
+
     if format == "toon":
-        return format_results_toon(results)
+        output = format_results_toon(results)
     elif format == "json":
-        return format_results_json(results)
+        output = format_results_json(results)
     elif format == "rich":
-        return format_results_rich(results, context)
+        output = format_results_rich(results, context)
     else:
+        logger.error("Unknown format requested: %s", format)
         raise ValueError(f"Unknown format: {format}. Use 'toon', 'json', or 'rich'.")
+
+    # Track token savings (compare against JSON baseline)
+    if track_stats and format != "json" and results:
+        try:
+            from .stats import record_search
+            json_output = format_results_json(results)
+            record_search(json_output, output)
+        except Exception as e:
+            logger.debug("Failed to record stats: %s", e)
+
+    return output
 
 
 if __name__ == "__main__":

@@ -1,0 +1,134 @@
+# WashedMCP Configuration File Example
+# =====================================
+# Copy this file to washedmcp.yaml (or .washedmcp.yaml) in your project root
+# or to ~/.config/washedmcp/config.yaml for global configuration.
+#
+# Values here are overridden by environment variables.
+# This file shows all available settings with their defaults.
+
+# Parser configuration
+parser:
+  # Extension to language mapping
+  extension_languages:
+    ".py": "python"
+    ".js": "javascript"
+    ".jsx": "javascript"
+    ".ts": "typescript"
+    ".tsx": "typescript"
+    ".mjs": "javascript"
+    ".cjs": "javascript"
+
+# Indexer configuration
+indexer:
+  # Directories to skip during indexing
+  skip_dirs:
+    - "node_modules"
+    - ".git"
+    - "__pycache__"
+    - ".venv"
+    - "venv"
+    - ".env"
+    - "dist"
+    - "build"
+    - ".next"
+    - ".nuxt"
+    - "coverage"
+    - ".pytest_cache"
+    - ".mypy_cache"
+    - ".tox"
+    - "egg-info"
+    - ".eggs"
+
+  # Batch size for database operations
+  batch_size: 5000
+
+  # Whether to skip summarization by default (saves API calls)
+  skip_summarize_default: true
+
+# Database configuration
+database:
+  # Default persist directory (relative to indexed project)
+  default_persist_dir: ".washedmcp"
+  default_persist_subdir: "chroma"
+
+  # Collection name
+  collection_name: "codebase"
+
+  # Distance metric for similarity search
+  # Options: cosine, l2, ip (inner product)
+  distance_metric: "cosine"
+
+  # Batch size for upsert operations
+  upsert_batch_size: 5000
+
+  # Disable telemetry
+  anonymized_telemetry: false
+
+# Embedder configuration
+embedder:
+  # Model name (from sentence-transformers)
+  model_name: "all-MiniLM-L6-v2"
+
+  # Expected embedding dimensions (for validation)
+  embedding_dimensions: 384
+
+  # Show progress bar during batch embedding
+  show_progress_bar: true
+
+# Summarizer configuration
+summarizer:
+  # Model to use for summarization
+  model: "claude-3-haiku-20240307"
+
+  # Maximum summary length in characters
+  max_summary_length: 100
+
+  # Maximum tokens for API response
+  max_tokens: 100
+
+  # Prompt template for summarization
+  # Use {code} placeholder for the function code
+  prompt_template: |
+    Summarize what this function does in 10 words or less. Be specific about the action. Just return the summary, nothing else.
+
+    Function: {code}
+
+  # Fallback message when summarization fails
+  fallback_message: "Unable to summarize"
+
+# TOON formatter configuration
+toon_formatter:
+  # Column specifications: [key, header, max_width]
+  columns:
+    - ["function_name", "function_name", 20]
+    - ["file_path", "file_path", 30]
+    - ["line_start", "line", 6]
+    - ["summary", "summary", 40]
+    - ["similarity", "similarity", 10]
+
+  # Indent for nested rows
+  row_indent: "  "
+
+  # Column separator
+  column_separator: " | "
+
+  # Maximum lines of code to show in rich format
+  max_code_lines: 20
+
+  # Truncation indicator
+  truncation_indicator: "..."
+
+# Search configuration
+search:
+  # Default number of results
+  default_top_k: 5
+
+  # Default context expansion depth
+  default_depth: 1
+
+  # Maximum depth allowed
+  max_depth: 5
+
+# Global settings
+debug: false
+verbose: false

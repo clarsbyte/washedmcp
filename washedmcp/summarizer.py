@@ -4,10 +4,13 @@ import os
 from dotenv import load_dotenv
 from anthropic import Anthropic
 
+from .config import get_config
+from .logging_config import get_logger
+
+logger = get_logger(__name__)
+
 # Load environment variables from .env file
 load_dotenv()
-
-MODEL = "claude-3-haiku-20240307"
 
 # Lazy client initialization
 _client = None
@@ -19,16 +22,11 @@ def _get_client() -> Anthropic:
     if _client is None:
         api_key = os.getenv("ANTHROPIC_API_KEY")
         if not api_key:
+            logger.error("ANTHROPIC_API_KEY environment variable is not set")
             raise ValueError("ANTHROPIC_API_KEY environment variable is not set")
+        logger.debug("Initializing Anthropic client")
         _client = Anthropic(api_key=api_key)
     return _client
-
-
-MAX_SUMMARY_LENGTH = 100
-
-SUMMARIZE_PROMPT = """Summarize what this function does in 10 words or less. Be specific about the action. Just return the summary, nothing else.
-
-Function: {code}"""
 
 
 def summarize_function(code: str, function_name: str = None) -> str:
@@ -40,16 +38,21 @@ def summarize_function(code: str, function_name: str = None) -> str:
         function_name: Optional name of the function (not used in prompt but available for context)
 
     Returns:
-        A 1-line summary (max 100 chars) of what the function does
+        A 1-line summary (max configured chars) of what the function does
     """
+    config = get_config()
+
     try:
+        # Use config for model and settings
+        prompt = config.summarizer.prompt_template.format(code=code)
+
         message = _get_client().messages.create(
-            model=MODEL,
-            max_tokens=100,
+            model=config.summarizer.model,
+            max_tokens=config.summarizer.max_tokens,
             messages=[
                 {
                     "role": "user",
-                    "content": SUMMARIZE_PROMPT.format(code=code)
+                    "content": prompt
                 }
             ]
         )
@@ -57,13 +60,15 @@ def summarize_function(code: str, function_name: str = None) -> str:
         summary = message.content[0].text.strip()
 
         # Truncate to max length if needed
-        if len(summary) > MAX_SUMMARY_LENGTH:
-            summary = summary[:MAX_SUMMARY_LENGTH - 3] + "..."
+        max_length = config.summarizer.max_summary_length
+        if len(summary) > max_length:
+            summary = summary[:max_length - 3] + "..."
 
         return summary
 
     except Exception:
-        return "Unable to summarize"
+        logger.exception("Failed to summarize function")
+        return config.summarizer.fallback_message
 
 
 def summarize_batch(functions: list[dict]) -> list[str]:
@@ -76,6 +81,7 @@ def summarize_batch(functions: list[dict]) -> list[str]:
     Returns:
         List of 1-line summaries corresponding to each input function
     """
+    logger.info("Summarizing %d functions", len(functions))
     summaries = []
 
     for func in functions:

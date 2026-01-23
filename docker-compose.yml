@@ -1,0 +1,67 @@
+# WashedMCP Docker Compose Configuration
+# Token-optimized semantic code search MCP server
+
+version: '3.8'
+
+services:
+  washedmcp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: washedmcp:latest
+    container_name: washedmcp
+
+    # Run with health server enabled
+    command: ["--with-health-server", "--health-port=8080"]
+
+    # Environment variables
+    environment:
+      - WASHEDMCP_DATA_DIR=/data
+      - HEALTH_PORT=8080
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+      # Optional: Add your API key for summarization
+      # - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+
+    # Volume mounts
+    volumes:
+      # Persistent storage for ChromaDB
+      - washedmcp-data:/data
+      # Mount your codebase (read-only recommended)
+      - ${CODEBASE_PATH:-.}:/codebase:ro
+
+    # Port mappings
+    ports:
+      - "${HEALTH_PORT:-8080}:8080"
+
+    # Health check
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+    # Resource limits
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+          cpus: '1.0'
+        reservations:
+          memory: 512M
+          cpus: '0.25'
+
+    # Restart policy
+    restart: unless-stopped
+
+    # Logging
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+# Named volumes
+volumes:
+  washedmcp-data:
+    driver: local
